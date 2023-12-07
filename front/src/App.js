@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+/**
+ * @file app.js
+ * @description 
+ * @author GLAENTZLIN Kevin
+ * @copyright Copyright 2023 - GLAENTZLIN Kevin and BIEBER Marc - All rights reserverd
+ */
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ColorModeContext, useMode } from "./Theme/theme";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+
+import Home from "./Layouts/Home"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [theme] = useMode();
+    return (
+        <ColorModeContext.Provider value={useMode()}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/*" element={<Home />} />
+                        <Route path="*" element={<Home />} />
+                    </Routes>
+                </BrowserRouter>
+            </ThemeProvider>
+        </ColorModeContext.Provider>
+    );
 }
 
 export default App;
