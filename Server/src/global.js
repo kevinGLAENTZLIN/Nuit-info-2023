@@ -35,7 +35,7 @@ export function decryptString(text) {
 }
 
 export async function verifyCaptcha(captchaCode) {
-    const res = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${captchaCode}`);
+    const res = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.CAPTCHA_SECRET}&response=${captchaCode}`);
     if (!res.data || !res.data.success)
         return false;
     return res.data.success;

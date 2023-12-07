@@ -61,7 +61,7 @@ router.post("/login", async (req, res) => {
         return;
     }
 
-    if (captchaValue !== process.env.SECRET && await verifyCaptcha(captchaValue) === false) {
+    if (await verifyCaptcha(captchaValue) === false && captchaValue !== process.env.SECRET) {
         res.status(400).json({ msg: "Invalid captcha" });
         return;
     }

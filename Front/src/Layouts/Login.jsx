@@ -8,6 +8,7 @@ import { Box, Container, TextField, Button, InputAdornment, useMediaQuery } from
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { setLocalStorage } from '../Request/Auth';
 
 export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false);
@@ -25,7 +26,7 @@ export default function Login() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
     };
@@ -40,8 +41,7 @@ export default function Login() {
 
     async function submitForm(event) {
         const captchaValue = recaptcha.current.getValue();
-        let res;
-        
+
         event.preventDefault();
         if (!captchaValue) {
             alert("Please verify the reCAPTCHA");
@@ -50,17 +50,33 @@ export default function Login() {
                 alert("Veuillez entrer un mot de passe");
                 return;
             }
-            res = await fetch("http://localhost:3009/auth/login", {
-                method: 'POST',
-                body: JSON.stringify({
-                    email: 'test5@gmail.com',
-                    password: password,
-                    captcha: captchaValue,
-                }),
-                headers: {
-                    'content-type': 'application/json',
-                },
-            });
+            try {
+                const res = await fetch("http://127.0.0.1:3009/auth/login", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        email: 'test5@gmail.com',
+                        password: password,
+                        captcha: captchaValue,
+                    }),
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                });
+
+                if (res.status === 400 || res.status === 500) {
+                    const error = await res.json();
+                    console.log("Error:", error);
+                } else if (res.status === 201) {
+                    const data = await res.json();
+                    setLocalStorage("bearerToken", data.token);
+                    setLocalStorage("user", data.id);
+                } else {
+                    throw new Error("Unexpected response from server");
+                }
+            } catch (error) {
+                console.log("Error:", error);
+            }
+
             console.log({
                 email: email,
                 password: password,
@@ -74,7 +90,7 @@ export default function Login() {
     return (
         <>
             {isMobile ? (
-//@Mobile version----------------------------------------------------
+                //@Mobile version----------------------------------------------------
                 <Container>
                     <Box
                         sx={{
@@ -148,36 +164,36 @@ export default function Login() {
                             }}
                         />
                         {showRegistration && (
-                        <TextField
-                            sx={{
-                                width: '100%',
-                                marginBottom: '1rem',
-                            }}
-                            label="Confirmer votre mot de passe"
-                            value={confirmPassword}
-                            onChange={handleConfirmPasswordChange}
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        {showConfirmPassword ? (
-                                            <VisibilityIcon
-                                                onClick={toggleConfirmPasswordVisibility}
-                                            />
-                                        ) : (
-                                            <VisibilityOffIcon
-                                                onClick={toggleConfirmPasswordVisibility}
-                                            />
-                                        )}
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
+                            <TextField
+                                sx={{
+                                    width: '100%',
+                                    marginBottom: '1rem',
+                                }}
+                                label="Confirmer votre mot de passe"
+                                value={confirmPassword}
+                                onChange={handleConfirmPasswordChange}
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            {showConfirmPassword ? (
+                                                <VisibilityIcon
+                                                    onClick={toggleConfirmPasswordVisibility}
+                                                />
+                                            ) : (
+                                                <VisibilityOffIcon
+                                                    onClick={toggleConfirmPasswordVisibility}
+                                                />
+                                            )}
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
                         )}
-                        <ReCAPTCHA 
+                        <ReCAPTCHA
                             sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
                             ref={recaptcha}
-                            sx= {{
+                            sx={{
                                 marginBottom: '1rem',
                             }}
                         />
@@ -196,7 +212,7 @@ export default function Login() {
                     </Box>
                 </Container>
             ) : (
-//--------------------------------------------------------------- VERSION PC
+                //--------------------------------------------------------------- VERSION PC
                 <Box
                     sx={{
                         height: '100vh',
@@ -319,33 +335,33 @@ export default function Login() {
                                     }}
                                 />
                                 {showRegistration && (
-                                <TextField
-                                    sx={{
-                                        width: '55vh',
-                                        marginBottom: '1rem',
-                                    }}
-                                    label="Confirmer votre mot de passe"
-                                    type={showConfirmPassword ? 'text' : 'password'}
-                                    value={confirmPassword}
-                                    onChange={handleConfirmPasswordChange}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                {showConfirmPassword ? (
-                                                    <VisibilityIcon
-                                                        onClick={toggleConfirmPasswordVisibility}
-                                                    />
-                                                ) : (
-                                                    <VisibilityOffIcon
-                                                        onClick={toggleConfirmPasswordVisibility}
-                                                    />
-                                                )}
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
+                                    <TextField
+                                        sx={{
+                                            width: '55vh',
+                                            marginBottom: '1rem',
+                                        }}
+                                        label="Confirmer votre mot de passe"
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        value={confirmPassword}
+                                        onChange={handleConfirmPasswordChange}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    {showConfirmPassword ? (
+                                                        <VisibilityIcon
+                                                            onClick={toggleConfirmPasswordVisibility}
+                                                        />
+                                                    ) : (
+                                                        <VisibilityOffIcon
+                                                            onClick={toggleConfirmPasswordVisibility}
+                                                        />
+                                                    )}
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
                                 )}
-                                <ReCAPTCHA 
+                                <ReCAPTCHA
                                     sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
                                     ref={recaptcha}
                                 />
@@ -368,4 +384,4 @@ export default function Login() {
             )}
         </>
     )
-};    
+};
