@@ -1,0 +1,20 @@
+DROP USER IF EXISTS 'NUIT-INFO'@'%';
+CREATE USER 'NUIT-INFO'@'%' IDENTIFIED BY 'nuit_info';
+GRANT ALL PRIVILEGES ON nuitinfo.* TO 'NUIT-INFO'@'%';
+FLUSH PRIVILEGES;
+
+DROP DATABASE IF EXISTS nuitinfo;
+CREATE DATABASE nuitinfo;
+USE nuitinfo;
+
+CREATE TABLE `user` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `email` VARCHAR(100) NOT NULL UNIQUE,
+  `password` VARCHAR(100) NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- test
+
+INSERT INTO `user` (`email`, `password`) VALUES ('martin.d-herouville@epitech.eu', '$2a$10$uh/6kOxhYtTB6c7r1vVCd.T5Q4MZeYC86zbrpoY9goK35rBfwbM.W');
