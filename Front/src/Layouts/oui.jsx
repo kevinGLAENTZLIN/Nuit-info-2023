@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container, Typography, Card, CardContent, Grid, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Logo from './pein3.jpeg';
+import Logo from '../Assets/pein3.jpeg';
 
 const sections = [
   {
