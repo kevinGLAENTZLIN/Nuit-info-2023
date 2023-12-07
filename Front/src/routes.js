@@ -5,23 +5,19 @@
  * @copyright Copyright 2023 - GLAENTZLIN Kevin and BIEBER Marc - All rights reserverd
  */
 
-import DataThresholdingIcon from '@mui/icons-material/DataThresholding';
-
-import Home from "./Layouts/Home";
+import Quiz from "./Layouts/quiz";
 
 export const siteRoutes = [
   {
     isVisible: true,
     path: "/",
     name: "Accueil",
-    icon: <DataThresholdingIcon fontSize="large"/>,
-    component: Home
+    component: Quiz
   },
   {
     isVisible: true,
     path: "/home",
     name: "Accueil",
-    icon: <DataThresholdingIcon fontSize="large"/>,
-    component: Home
+    component: Quiz
   },
 ];
