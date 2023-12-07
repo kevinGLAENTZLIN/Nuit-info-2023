@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Stepper,
@@ -20,6 +20,11 @@ export default function Quiz() {
     const [quizCompleted, setQuizCompleted] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // Ouvrir la popup automatiquement lorsqu'un utilisateur se connecte
+        setOpenDialog(true);
+    }, []); // Le tableau vide en tant que deuxième argument assure que cela se produit seulement au montage initial
+
     const handleNext = () => {
         if (activeStep === steps.length - 1) {
             setQuizCompleted(true);
@@ -37,7 +42,7 @@ export default function Quiz() {
     };
 
     const handleFinish = () => {
-        navigate('/reponse');
+        navigate('/home');
     };
 
     const steps = [
@@ -67,10 +72,6 @@ export default function Quiz() {
 
     return (
         <Container>
-            <Button variant="contained" color="primary" onClick={() => setOpenDialog(true)}>
-                Ouvrir le Quiz
-            </Button>
-
             <Dialog open={openDialog} onClose={handleDialogClose}>
                 <DialogTitle>{steps[activeStep]}</DialogTitle>
                 <DialogContent style={{ marginBottom: '20px' }}>

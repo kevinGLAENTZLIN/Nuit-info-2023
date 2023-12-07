@@ -5,19 +5,26 @@
  * @copyright Copyright 2023 - GLAENTZLIN Kevin and BIEBER Marc - All rights reserverd
  */
 
-import Quiz from "./Layouts/quiz";
+import Quiz from "./Views/quiz";
+import Home from "./Layouts/home"
 
 export const siteRoutes = [
   {
     isVisible: true,
     path: "/",
-    name: "Accueil",
+    name: "Quiz",
+    component: Quiz
+  },
+  {
+    isVisible: true,
+    path: "/quiz",
+    name: "Quiz",
     component: Quiz
   },
   {
     isVisible: true,
     path: "/home",
-    name: "Accueil",
-    component: Quiz
+    name: "Home",
+    component: Home
   },
 ];
