@@ -113,6 +113,9 @@ export default function Login() {
                         <ReCAPTCHA 
                             sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
                             ref={recaptcha}
+                            sx= {{
+                                marginBottom: '1rem',
+                            }}
                         />
                         <Button onClick={submitForm} variant="contained" type="submit" sx={{ width: '20vh' }}>
                             {showRegistration ? "S'enregistrer" : 'Se connecter'}
@@ -253,7 +256,7 @@ export default function Login() {
                                     sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
                                     ref={recaptcha}
                                 />
-                                <Button variant="contained" type="submit" sx={{ width: '20vh' }}>
+                                <Button onClick={submitForm} variant="contained" type="submit" sx={{ marginTop: '1rem', width: '20vh' }}>
                                     {showRegistration ? 'S\'enregistrer' : 'Se connecter'}
                                 </Button>
                                 <Button
