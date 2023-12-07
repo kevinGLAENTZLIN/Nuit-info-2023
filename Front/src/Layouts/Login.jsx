@@ -14,9 +14,9 @@ export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [email, setEmail] = useState(false);
-    const [password, setPassword] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const recaptcha = useRef();
 
     const toggleRegistration = () => {
@@ -31,6 +31,10 @@ export default function Login() {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
+    const handleEmail = (event) => {
+        setEmail(event.target.value);
+    }
+
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
@@ -39,14 +43,55 @@ export default function Login() {
         setConfirmPassword(event.target.value);
     };
 
-    async function submitForm(event) {
+    async function login(event) {
         const captchaValue = recaptcha.current.getValue();
+
+        let res;
 
         event.preventDefault();
         if (!captchaValue) {
-            alert("Please verify the reCAPTCHA");
+            alert("Veuillez vérifier le captcha");
+            return;
+        }
+        if (email === "") {
+            alert("Veuillez préciser votre adresse mail");
+            return;
+        }
+        if (password === "") {
+            alert("Aucun mot de passe n'a été indiqué");
+            return;
+        }
+        res = await fetch("http://localhost:3009/auth/login", {
+            method: 'POST',
+            body: JSON.stringify({
+                email: 'test5@gmail.com',
+                password: password,
+                captcha: captchaValue,
+            }),
+            headers: {
+                'content-type': 'application/json',
+            },
+        }).catch(err => {
+            alert(err);
+        });
+    }
+
+    async function submitForm(event) {
+        const captchaValue = recaptcha.current.getValue();
+        
+        event.preventDefault();
+        if (!captchaValue) {
+            alert("Veuillez vérifier le captcha");
         } else {
-            if (password === null) {
+            if (email === "") {
+                alert("Veuillez entrer une adresse mail");
+                return;
+            }
+            if (!email.includes('@')) {
+                alert("Veuillez rentrer une adresse mail valide");
+                return;
+            }
+            if (password === "") {
                 alert("Veuillez entrer un mot de passe");
                 return;
             }
@@ -82,6 +127,15 @@ export default function Login() {
                 password: password,
                 captcha: captchaValue,
             })
+            if (confirmPassword === "") {
+                alert("Veuillez vérifier votre mot de passe");
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert("Vos mots de passe ne sont pas identiques");
+                return;
+            }
+            alert("Registered successfully");
         }
     }
 
@@ -108,28 +162,15 @@ export default function Login() {
                             {showRegistration ? 'Inscription' : 'Connexion'}
                         </h1>
 
-                        {showRegistration && (
-                            <TextField
-                                sx={{
-                                    width: '100%',
-                                    marginBottom: '1rem',
-                                }}
-                                label="Adresse-mail"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <AccountCircleIcon />
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                        )}
                         <TextField
                             sx={{
                                 width: '100%',
                                 marginBottom: '1rem',
                             }}
-                            label="Nom d'utilisateur"
+                            type='email'
+                            label="Adresse mail"
+                            value={email}
+                            onChange={handleEmail}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -190,14 +231,14 @@ export default function Login() {
                                 }}
                             />
                         )}
-                        <ReCAPTCHA
-                            sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
+                        <ReCAPTCHA 
+                            sitekey={process.env.RECAPTCHA_KEY_PUBLIC}
                             ref={recaptcha}
                             sx={{
                                 marginBottom: '1rem',
                             }}
                         />
-                        <Button onClick={submitForm} variant="contained" type="submit" sx={{ width: '20vh' }}>
+                        <Button onClick={showRegistration ? submitForm : login} variant="contained" type="submit" sx={{ width: '20vh' }}>
                             {showRegistration ? "S'enregistrer" : 'Se connecter'}
                         </Button>
                         <Button
@@ -278,29 +319,15 @@ export default function Login() {
                                     justifyContent: 'center',
                                 }}
                             >
-                                {showRegistration && (
-                                    <TextField
-                                        sx={{
-                                            width: '55vh',
-                                            marginBottom: '1rem',
-                                            justifyContent: 'center',
-                                        }}
-                                        label="Adresse-mail"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <AccountCircleIcon />
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                )}
                                 <TextField
                                     sx={{
                                         width: '55vh',
                                         marginBottom: '1rem',
                                     }}
-                                    label="Nom d'utilisateur"
+                                    type='email'
+                                    label="Adresse mail"
+                                    value={email}
+                                    onChange={handleEmail}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
