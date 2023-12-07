@@ -1,7 +1,10 @@
 import express from "express";
 import { db, verifyToken } from "../global.js";
+import userDailyDataRouter from "./userDailyData.js";
 
 const router = express.Router();
+
+router.use("/data", userDailyDataRouter);
 
 router.get("/", verifyToken, (req, res) => {
     db.getAllUsers().then((rows) => {
