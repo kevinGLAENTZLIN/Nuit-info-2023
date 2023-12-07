@@ -13,8 +13,9 @@ export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [password, setPassword] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState(null);
+    const [email, setEmail] = useState(false);
+    const [password, setPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState(false);
     const recaptcha = useRef();
 
     const toggleRegistration = () => {
@@ -39,13 +40,32 @@ export default function Login() {
 
     async function submitForm(event) {
         const captchaValue = recaptcha.current.getValue();
+        let res;
         
         event.preventDefault();
         if (!captchaValue) {
             alert("Please verify the reCAPTCHA");
         } else {
-            alert("Form submission successful!");
-            alert(`Password: ${password} | Confirm password: ${confirmPassword}`);
+            if (password === null) {
+                alert("Veuillez entrer un mot de passe");
+                return;
+            }
+            res = await fetch("http://localhost:3009/auth/login", {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: 'test5@gmail.com',
+                    password: password,
+                    captcha: captchaValue,
+                }),
+                headers: {
+                    'content-type': 'application/json',
+                },
+            });
+            console.log({
+                email: email,
+                password: password,
+                captcha: captchaValue,
+            })
         }
     }
 
