@@ -27,7 +27,7 @@ router.get("/:date", verifyToken, (req, res) => {
 
 router.post("/", verifyToken, (req, res) => {
     const userId = getIdFromToken(req, res); if (userId === -1) return;
-    const date = new Date(req.body.date);
+    const date = new Date();
     const data = JSON.stringify(req.body.data);
     db.getUserDailyData(userId, date).then((rows) => {
         if (rows[0]) {

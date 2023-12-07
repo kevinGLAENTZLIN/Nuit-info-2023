@@ -88,18 +88,21 @@ class DbManager {
     }
 
     getUserDailyData(userId, date) {
+        date.setHours(0, 0, 0, 0);
         const query = `SELECT * FROM user_daily_data WHERE user_id = ? AND date = ?;`;
         const values = [userId, date];
         return this.executeQuery(query, values);
     }
 
     insertUserDailyData(userId, date, data) {
+        date.setHours(0, 0, 0, 0);
         const query = 'INSERT INTO user_daily_data(user_id, date, data) VALUES (?, ?, ?)';
         const values = [userId, date, data];
         return this.executeQuery(query, values);
     }
 
     updateUserDailyData(userId, date, data) {
+        date.setHours(0, 0, 0, 0);
         const query = `UPDATE user_daily_data SET data = ? WHERE user_id = ? AND date = ?;`;
         const values = [data, userId, date];
         return this.executeQuery(query, values);
