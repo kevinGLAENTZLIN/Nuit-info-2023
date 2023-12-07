@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+
+//@reCAPTCHA---------------------------------------------------------------
+import ReCAPTCHA from 'react-google-recaptcha';
 
 //@MUI---------------------------------------------------------------
 import { Box, Container, TextField, Button, InputAdornment, useMediaQuery } from "@mui/material";
@@ -9,6 +12,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const recaptcha = useRef();
 
     const toggleRegistration = () => {
         setShowRegistration(!showRegistration);
@@ -17,6 +21,18 @@ export default function Login() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
+    async function submitForm(event) {
+        const captchaValue = recaptcha.current.getValue();
+        
+        event.preventDefault();
+        if (!captchaValue) {
+            alert("Please verify the reCAPTCHA");
+        } else {
+            alert("Form submission successful!");
+            alert(captchaValue)
+        }
+    }
 
     const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -27,9 +43,11 @@ export default function Login() {
                 <Container>
                     <Box
                         sx={{
+                            height: '100vh',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            justifyContent: 'center',
                         }}
                     >
                         <h1 style={{
@@ -92,7 +110,11 @@ export default function Login() {
                                 ),
                             }}
                         />
-                        <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+                        <ReCAPTCHA 
+                            sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
+                            ref={recaptcha}
+                        />
+                        <Button onClick={submitForm} variant="contained" type="submit" sx={{ width: '20vh' }}>
                             {showRegistration ? "S'enregistrer" : 'Se connecter'}
                         </Button>
                         <Button
@@ -226,6 +248,10 @@ export default function Login() {
                                             </InputAdornment>
                                         ),
                                     }}
+                                />
+                                <ReCAPTCHA 
+                                    sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
+                                    ref={recaptcha}
                                 />
                                 <Button variant="contained" type="submit" sx={{ width: '20vh' }}>
                                     {showRegistration ? 'S\'enregistrer' : 'Se connecter'}
