@@ -2,13 +2,16 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from 'cors';
 import dotenv from "dotenv";
+import axios from "axios";
 import mysql from "mysql2";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import DbManager from "./dbLink.js";
+import EmailSender from './email.js';
 
 dotenv.config();
 
+export const emailSender = new EmailSender();
 export const db = new DbManager();
 export const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,6 +32,18 @@ export function decryptString(text) {
     text = JSON.parse(text);
     let decipher = crypto.createDecipheriv(algorithm, Buffer.from(process.env.SECRET, 'utf8'), Buffer.from(text.i, 'hex'));
     return Buffer.concat([decipher.update(Buffer.from(text.e, 'hex')), decipher.final()]).toString();
+}
+
+export async function verifyCaptcha(captchaCode) {
+    const res = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${captchaCode}`);
+    if (!res.data || !res.data.success)
+        return false;
+    return res.data.success;
+}
+
+export function extractUsername(email) {
+    const parts = email.split('@');
+    return (parts.length === 2 ? parts[0] : email);
 }
 
 /**

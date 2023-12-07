@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+
+//@reCAPTCHA---------------------------------------------------------------
+import ReCAPTCHA from 'react-google-recaptcha';
 
 //@MUI---------------------------------------------------------------
 import { Box, Container, TextField, Button, InputAdornment, useMediaQuery } from "@mui/material";
@@ -9,6 +12,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [email, setEmail] = useState(false);
+    const [password, setPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState(false);
+    const recaptcha = useRef();
 
     const toggleRegistration = () => {
         setShowRegistration(!showRegistration);
@@ -17,6 +25,49 @@ export default function Login() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handleConfirmPasswordChange = (event) => {
+        setConfirmPassword(event.target.value);
+    };
+
+    async function submitForm(event) {
+        const captchaValue = recaptcha.current.getValue();
+        let res;
+        
+        event.preventDefault();
+        if (!captchaValue) {
+            alert("Please verify the reCAPTCHA");
+        } else {
+            if (password === null) {
+                alert("Veuillez entrer un mot de passe");
+                return;
+            }
+            res = await fetch("http://localhost:3009/auth/login", {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: 'test5@gmail.com',
+                    password: password,
+                    captcha: captchaValue,
+                }),
+                headers: {
+                    'content-type': 'application/json',
+                },
+            });
+            console.log({
+                email: email,
+                password: password,
+                captcha: captchaValue,
+            })
+        }
+    }
 
     const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -27,9 +78,11 @@ export default function Login() {
                 <Container>
                     <Box
                         sx={{
+                            height: '100vh',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            justifyContent: 'center',
                         }}
                     >
                         <h1 style={{
@@ -76,6 +129,8 @@ export default function Login() {
                             }}
                             label="Mot de passe"
                             type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={handlePasswordChange}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -92,7 +147,41 @@ export default function Login() {
                                 ),
                             }}
                         />
-                        <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+                        {showRegistration && (
+                        <TextField
+                            sx={{
+                                width: '100%',
+                                marginBottom: '1rem',
+                            }}
+                            label="Confirmer votre mot de passe"
+                            value={confirmPassword}
+                            onChange={handleConfirmPasswordChange}
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        {showConfirmPassword ? (
+                                            <VisibilityIcon
+                                                onClick={toggleConfirmPasswordVisibility}
+                                            />
+                                        ) : (
+                                            <VisibilityOffIcon
+                                                onClick={toggleConfirmPasswordVisibility}
+                                            />
+                                        )}
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        )}
+                        <ReCAPTCHA 
+                            sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
+                            ref={recaptcha}
+                            sx= {{
+                                marginBottom: '1rem',
+                            }}
+                        />
+                        <Button onClick={submitForm} variant="contained" type="submit" sx={{ width: '20vh' }}>
                             {showRegistration ? "S'enregistrer" : 'Se connecter'}
                         </Button>
                         <Button
@@ -211,6 +300,8 @@ export default function Login() {
                                     }}
                                     label="Mot de passe"
                                     type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={handlePasswordChange}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -227,7 +318,38 @@ export default function Login() {
                                         ),
                                     }}
                                 />
-                                <Button variant="contained" type="submit" sx={{ width: '20vh' }}>
+                                {showRegistration && (
+                                <TextField
+                                    sx={{
+                                        width: '55vh',
+                                        marginBottom: '1rem',
+                                    }}
+                                    label="Confirmer votre mot de passe"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    value={confirmPassword}
+                                    onChange={handleConfirmPasswordChange}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                {showConfirmPassword ? (
+                                                    <VisibilityIcon
+                                                        onClick={toggleConfirmPasswordVisibility}
+                                                    />
+                                                ) : (
+                                                    <VisibilityOffIcon
+                                                        onClick={toggleConfirmPasswordVisibility}
+                                                    />
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                )}
+                                <ReCAPTCHA 
+                                    sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
+                                    ref={recaptcha}
+                                />
+                                <Button onClick={submitForm} variant="contained" type="submit" sx={{ marginTop: '1rem', width: '20vh' }}>
                                     {showRegistration ? 'S\'enregistrer' : 'Se connecter'}
                                 </Button>
                                 <Button
