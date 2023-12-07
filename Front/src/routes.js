@@ -6,14 +6,15 @@
  */
 
 import Quiz from "./Views/quiz";
+import Oui from "./Layouts/oui"
 import Home from "./Layouts/home"
 
 export const siteRoutes = [
   {
     isVisible: true,
     path: "/",
-    name: "Quiz",
-    component: Quiz
+    name: "oui",
+    component: Oui
   },
   {
     isVisible: true,
