@@ -1,34 +1,37 @@
 import React from 'react';
 import { Button, Container, Typography, Card, CardContent, Grid, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../Assets/pein3.jpeg';
+import Logo1 from '../Assets/image1.jpg';
+import Logo2 from '../Assets/image2.jpg';
+import Logo3 from '../Assets/image3.jpg';
+import Logo4 from '../Assets/image4.jpg';
 
 const sections = [
   {
     title: 'L\'impact environnemental de nos actions',
     content: 'Découvrez comment nos actions contribuent à la préservation de l\'environnement.',
-    image: Logo,
+    image: Logo1,
     link: 'L\'impact environnemental de nos actions',
     environmentalDescription: 'Explorez l\'impact positif que nos actions ont sur la planète et comment nous contribuons à la préservation de la biodiversité.',
   },
   {
     title: 'Mythe vs Réalité sur l\'impact environnemental',
     content: 'Démystifions les idées préconçues sur l\'impact environnemental de différentes pratiques.',
-    image: 'url_to_section_2_image',
+    image: Logo2,
     link: 'Mythe vs Réalité sur l\'impact environnemental',
     environmentalDescription: 'Découvrez la vérité derrière certaines idées reçues sur l\'impact environnemental. Comment nos choix quotidiens peuvent-ils influencer positivement la planète?',
   },
   {
     title: 'Actions concrètes pour un impact positif',
     content: 'Découvrez les actions pratiques que nous entreprenons pour avoir un impact positif sur l\'environnement.',
-    image: 'url_to_section_3_image',
+    image: Logo4,
     link: 'Actions concrètes pour un impact positif',
     environmentalDescription: 'Explorez les initiatives que nous prenons pour réduire notre empreinte écologique. Ensemble, nous pouvons créer un changement significatif.',
   },
   {
     title: 'L\'importance de la sensibilisation',
     content: 'Explorez comment la sensibilisation peut jouer un rôle crucial dans la protection de l\'environnement.',
-    image: 'url_to_section_4_image',
+    image: Logo3,
     link: 'L\'importance de la sensibilisation',
     environmentalDescription: 'Découvrez comment sensibiliser les autres peut être un catalyseur pour la protection de l\'environnement. Comment votre implication peut-elle inspirer des actions positives?',
   },
