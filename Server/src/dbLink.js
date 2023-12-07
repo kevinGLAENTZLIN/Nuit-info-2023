@@ -80,6 +80,30 @@ class DbManager {
         const values = [id];
         return this.executeQuery(query, values);
     }
+
+    getAllUserDailyData(userId) {
+        const query = `SELECT * FROM user_daily_data WHERE user_id = ?;`;
+        const values = [userId];
+        return this.executeQuery(query, values);
+    }
+
+    getUserDailyData(userId, date) {
+        const query = `SELECT * FROM user_daily_data WHERE user_id = ? AND date = ?;`;
+        const values = [userId, date];
+        return this.executeQuery(query, values);
+    }
+
+    insertUserDailyData(userId, date, data) {
+        const query = 'INSERT INTO user_daily_data(user_id, date, data) VALUES (?, ?, ?)';
+        const values = [userId, date, data];
+        return this.executeQuery(query, values);
+    }
+
+    updateUserDailyData(userId, date, data) {
+        const query = `UPDATE user_daily_data SET data = ? WHERE user_id = ? AND date = ?;`;
+        const values = [data, userId, date];
+        return this.executeQuery(query, values);
+    }
 }
 
 export default DbManager;
