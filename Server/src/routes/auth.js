@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { db, emailSender, extractUsername } from "../global.js";
+import { db, emailSender, extractUsername, verifyCaptcha } from "../global.js";
 import crypto from "crypto";
 
 function checkEmail(email) {
@@ -51,11 +51,18 @@ router.post("/activate", (req, res) => {
     }
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    if (!email || !password) {
+    const captchaValue = req.body.captcha;
+
+    if (!captchaValue || !email || !password) {
         res.status(400).json({ msg: "Bad parameter" });
+        return;
+    }
+
+    if (captchaValue !== process.env.SECRET && await verifyCaptcha(captchaValue) === false) {
+        res.status(400).json({ msg: "Invalid captcha" });
         return;
     }
 

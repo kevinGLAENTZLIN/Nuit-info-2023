@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from 'cors';
 import dotenv from "dotenv";
+import axios from "axios";
 import mysql from "mysql2";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
@@ -31,6 +32,13 @@ export function decryptString(text) {
     text = JSON.parse(text);
     let decipher = crypto.createDecipheriv(algorithm, Buffer.from(process.env.SECRET, 'utf8'), Buffer.from(text.i, 'hex'));
     return Buffer.concat([decipher.update(Buffer.from(text.e, 'hex')), decipher.final()]).toString();
+}
+
+export async function verifyCaptcha(captchaCode) {
+    const res = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${captchaCode}`);
+    if (!res.data || !res.data.success)
+        return false;
+    return res.data.success;
 }
 
 export function extractUsername(email) {
