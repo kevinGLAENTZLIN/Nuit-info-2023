@@ -12,6 +12,9 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 export default function Login() {
     const [showRegistration, setShowRegistration] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [password, setPassword] = useState(null);
+    const [confirmPassword, setConfirmPassword] = useState(null);
     const recaptcha = useRef();
 
     const toggleRegistration = () => {
@@ -20,6 +23,18 @@ export default function Login() {
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    };
+    
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handleConfirmPasswordChange = (event) => {
+        setConfirmPassword(event.target.value);
     };
 
     async function submitForm(event) {
@@ -30,7 +45,7 @@ export default function Login() {
             alert("Please verify the reCAPTCHA");
         } else {
             alert("Form submission successful!");
-            alert(captchaValue)
+            alert(`Password: ${password} | Confirm password: ${confirmPassword}`);
         }
     }
 
@@ -94,6 +109,8 @@ export default function Login() {
                             }}
                             label="Mot de passe"
                             type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={handlePasswordChange}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -110,6 +127,33 @@ export default function Login() {
                                 ),
                             }}
                         />
+                        {showRegistration && (
+                        <TextField
+                            sx={{
+                                width: '100%',
+                                marginBottom: '1rem',
+                            }}
+                            label="Confirmer votre mot de passe"
+                            value={confirmPassword}
+                            onChange={handleConfirmPasswordChange}
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        {showConfirmPassword ? (
+                                            <VisibilityIcon
+                                                onClick={toggleConfirmPasswordVisibility}
+                                            />
+                                        ) : (
+                                            <VisibilityOffIcon
+                                                onClick={toggleConfirmPasswordVisibility}
+                                            />
+                                        )}
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                        )}
                         <ReCAPTCHA 
                             sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
                             ref={recaptcha}
@@ -236,6 +280,8 @@ export default function Login() {
                                     }}
                                     label="Mot de passe"
                                     type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={handlePasswordChange}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -252,6 +298,33 @@ export default function Login() {
                                         ),
                                     }}
                                 />
+                                {showRegistration && (
+                                <TextField
+                                    sx={{
+                                        width: '55vh',
+                                        marginBottom: '1rem',
+                                    }}
+                                    label="Confirmer votre mot de passe"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    value={confirmPassword}
+                                    onChange={handleConfirmPasswordChange}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                {showConfirmPassword ? (
+                                                    <VisibilityIcon
+                                                        onClick={toggleConfirmPasswordVisibility}
+                                                    />
+                                                ) : (
+                                                    <VisibilityOffIcon
+                                                        onClick={toggleConfirmPasswordVisibility}
+                                                    />
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                )}
                                 <ReCAPTCHA 
                                     sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
                                     ref={recaptcha}
