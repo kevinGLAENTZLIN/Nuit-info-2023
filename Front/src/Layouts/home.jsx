@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -8,8 +8,9 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ChartComponent from '../Compenent/graph';
-import { setLocalStorage } from '../Request/Auth';
+import { setLocalStorage, getLocalStorage } from '../Request/Auth';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const InfoBox = ({ data }) => {
   return (
@@ -32,11 +33,38 @@ const InfoBoxContainer = ({ infoData }) => {
   );
 };
 
+const getEmail = async () => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:3009/user/${getLocalStorage("user")}`, {
+      headers: {
+        "Authorization": `Bearer ${getLocalStorage("bearerToken")}`,
+      },
+    });
+    const data = response.data;
+    return data.email
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 // ... (imports inchangés)
 
 const Home = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [email, setEmail] = useState(null);
   const navigate = useNavigate();
+
+  const fetchEmail = async () => {
+    try {
+      const userEmail = await getEmail();
+      setEmail(userEmail);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  if (email === null) {
+    fetchEmail()
+  }
 
   const signOut = () => {
     setLocalStorage("bearerToken", null);
@@ -91,7 +119,7 @@ const Home = () => {
       >
         <Paper style={{ padding: 16 }}>
           <Typography variant="h6" gutterBottom>
-            Mettre l'email
+            { email }
           </Typography>
           <Button onClick={signOut}>Déconnexion</Button>
         </Paper>
