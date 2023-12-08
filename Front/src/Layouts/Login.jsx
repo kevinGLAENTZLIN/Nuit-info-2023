@@ -23,6 +23,10 @@ export default function Login() {
 
     const toggleRegistration = () => {
         setShowRegistration(!showRegistration);
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setTextInfo("");
     };
 
     const togglePasswordVisibility = () => {
