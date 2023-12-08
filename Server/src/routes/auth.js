@@ -107,7 +107,7 @@ router.post("/register", (req, res) => {
             try {
                 const randomCode = Math.random().toString(36).substring(7);
                 const signedCode = crypto.createHmac('sha256', process.env.SECRET).update(randomCode).digest('hex');
-                const link = `${process.env.API_URL}/activate?code=${encodeURIComponent(randomCode)}&signature=${encodeURIComponent(signedCode)}&email=${encodeURIComponent(email)}`;
+                const link = `${process.env.URL_FRONT}/activate?code=${encodeURIComponent(randomCode)}&signature=${encodeURIComponent(signedCode)}&email=${encodeURIComponent(email)}`;
                 if (process.env.NODE_ENV === 'dev') {
                     res.status(201).json({ msg: "Compte créé. Veuillez cliquer sur le lien reçu par mail", link: link });
                     return;
