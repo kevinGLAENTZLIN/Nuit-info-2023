@@ -59,37 +59,63 @@ router.post("/", verifyToken, (req, res) => {
     });
 });
 
-router.post("/process/:year/:week", verifyToken, (req, res) => {
-    let somme = 0;
+function calculateWeight(data, key) {
+    const node = daily.elements.find((element) => element.name === key);
+    let weight = node.weight;
+    if (node.type === "radio" || node.type === "dropdown") {
+        const position = node.choices.indexOf(data[key]);
+        if (position === -1)
+            weight = 0;
+        else
+            weight = node.weight[position];
+    } else if (node.type === "checkbox") {
+        let totalWeight = 0;
+        data[key].forEach((choice) => {
+            const position = node.choices.indexOf(choice);
+            if (position !== -1)
+                totalWeight += node.weight[position];
+        });
+        weight = totalWeight;
+    } else {
+        weight = weight;
+    }
+    return weight;
+}
+
+router.get("/process/:year/:week", verifyToken, (req, res) => {
     const userId = getIdFromToken(req, res); if (userId === -1) return;
     db.getUserDailyData(userId, req.params.year, req.params.week).then((rows) => {
         if (rows[0]) {
             const data = JSON.parse(rows[0].data);
+            let sommeWeight = 0.0;
+            let co2Consumn = 0.0;
+            let waterConsum = 0.0;
             Object.keys(data).forEach((key) => {
-                const node = daily.elements.find((element) => element.name === key);
-                let weight = node.weight;
-                if (node.type === "radio" || node.type === "dropdown") {
-                    const position = node.choices.indexOf(data[key]);
-                    if (position === -1)
-                        weight = 0;
-                    else
-                        weight = node.weight[position];
-                } else if (node.type === "checkbox") {
-                    let totalWeight = 0;
-                    data[key].forEach((choice) => {
-                        const position = node.choices.indexOf(choice);
-                        if (position !== -1)
-                            totalWeight += node.weight[position];
-                    });
-                    weight = totalWeight;
-                } else {
-                    weight = weight;
+                let tmp = calculateWeight(data, key);
+                if (key === "kilometers_car") {
+                    const kilometers = data[key];
+                    const moyenne = 7;
+                    co2Consumn = ((kilometers / 100) * moyenne) * 2.6;
+                    tmp *= kilometers;
                 }
-                console.log("RESULTAT: " + weight);
-                somme += weight;
+                if (key === "area_of_living") {
+                    tmp = data[key] * tmp;
+                }
+                if (key === "number_of_people_in_house") {
+                    tmp = data[key] * -tmp;
+                }
+                if (key === "time_spent_on_internet") {
+                    tmp = data[key] * tmp;
+                    co2Consumn += data[key] * 7 * 0.50 * 0.4;
+                }
+                if (key === "number_of_cigarettes") {
+                    tmp = data[key] * tmp;
+                    co2Consumn += (data[key] * 0.2);
+                    waterConsum += (data[key] * 4);
+                }
+                sommeWeight += tmp;
             });
-            console.log("somme", somme);
-            res.json(data);
+            res.status(200).json({ sommeWeight: sommeWeight, co2Consumn: co2Consumn, waterConsum: waterConsum });
         } else {
             res.status(404).json({ msg: "User weekly data not found" });
         }
