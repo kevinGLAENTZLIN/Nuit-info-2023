@@ -18,6 +18,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [textInfo, setTextInfo] = useState("");
+    const [textInfoColor, setTextInfoColor] = useState("red");
     const recaptcha = useRef();
     const recaptcha_key = process.env.REACT_APP_RECAPTCHA_KEY_PUBLIC;
 
@@ -98,13 +99,16 @@ export default function Login() {
         if (res.status === 400 || res.status === 500) {
             const error = await res.json();
             console.error("Error:", error);
+            setTextInfoColor("red");
             setTextInfo(error.msg);
         } else if (res.status === 201) {
             const data = await res.json();
             setLocalStorage("bearerToken", data.token);
             setLocalStorage("user", data.id);
+            setTextInfoColor("green");
             setTextInfo("Connecté avec succès");
         } else {
+            setTextInfoColor("red");
             setTextInfo("Impossible de se connecter au serveur, veuillez réessayer ultérieurement");
             throw new Error("Unexpected response from server");
         }
@@ -131,15 +135,16 @@ export default function Login() {
             });
 
             if (res.status === 400 || res.status === 500) {
-                console.log({
-                    email: email,
-                    password: password,
-                    captcha: captchaValue,
-                });
+                const error = await res.json();
+                console.error("Error:", error);
+                setTextInfoColor("red");
+                setTextInfo(error.msg);
             } else if (res.status === 201) {
                 const data = await res.json();
+                setTextInfoColor("green");
                 setTextInfo(data.msg);
             } else {
+                setTextInfoColor("red");
                 setTextInfo("Impossible de se connecter au serveur, veuillez réessayer ultérieurement");
                 throw new Error("Unexpected response from server");
             }
@@ -205,7 +210,7 @@ export default function Login() {
                         }}>
                             {showRegistration ? 'Inscription' : 'Connexion'}
                         </h1>
-                        <h3>
+                        <h3 style={{ color: textInfoColor }}>
                             {textInfo}
                         </h3>
                         <Box
