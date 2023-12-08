@@ -1,5 +1,5 @@
 import express from "express";
-import { db, verifyToken, getIdFromToken } from "../global.js";
+import { db, verifyToken, getIdFromToken, encryptString, decryptString } from "../global.js";
 import DbManager from "../dbLink.js";
 import { daily } from "./form.js";
 
@@ -16,6 +16,9 @@ const router = express.Router();
 router.get("/", verifyToken, (req, res) => {
     const userId = getIdFromToken(req, res); if (userId === -1) return;
     db.getAllUserDailyData(userId).then((rows) => {
+        rows.forEach((row) => {
+            row.data = decryptString(row.data);
+        });
         res.json(rows);
     }).catch((err) => {
         res.status(500).json({ msg: "Internal server error", error: err });
@@ -25,9 +28,10 @@ router.get("/", verifyToken, (req, res) => {
 router.get("/:year/:week", verifyToken, (req, res) => {
     const userId = getIdFromToken(req, res); if (userId === -1) return;
     db.getUserDailyData(userId, req.params.year, req.params.week).then((rows) => {
-        if (rows[0])
+        if (rows[0]) {
+            rows[0].data = decryptString(rows[0].data);
             res.json(rows[0]);
-        else
+        } else
             res.status(404).json({ msg: "User weekly data not found" });
     }).catch((err) => {
         res.status(500).json({ msg: "Internal server error", error: err });
@@ -39,7 +43,7 @@ router.post("/", verifyToken, (req, res) => {
     const date = new Date();
     const year = date.getFullYear();
     const week = date.getWeekNumber();
-    const data = JSON.stringify(req.body.data);
+    const data = encryptString(JSON.stringify(req.body.data));
     db.getUserDailyData(userId, year, week).then((rows) => {
         if (rows[0]) {
             db.updateUserDailyData(userId, year, week, data).then((rows) => {
