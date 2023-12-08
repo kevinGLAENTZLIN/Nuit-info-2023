@@ -15,20 +15,17 @@ import {ColorModeContext, useMode} from "../Theme/theme";
 // ----------------------------------------------------------------------
 
 function MainPage() {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [theme, colorMode] = useMode();
   const navigate = useNavigate();
 
-  // React.useEffect(() => {
-  //   checkLoginStatus()
-  //     .then((isAuthenticated = true) => {   DECOMMENTER QUAND ON PEUT S'AUTH
-  //       if (isAuthenticated == true) {
-  //         setIsLoggedIn(true);
-  //       } else {
-  //         navigate('/quiz'); //-> mettre /login avant la mise en prod
-  //       }
-  //     });
-  // }, [navigate]);
+  React.useEffect(() => {
+    checkLoginStatus()
+      .then((isAuthenticated) => { 
+        if (!isAuthenticated) {
+          navigate('/login');
+        }
+      });
+  }, [navigate]);
 
    const getRoutes = (routes) => {
     return routes.map((prop, key) => {

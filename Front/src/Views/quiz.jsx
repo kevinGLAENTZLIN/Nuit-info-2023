@@ -158,7 +158,7 @@ export default function Quiz() {
         }).catch((err) => {
             console.error(err);
         });
-    }, []);
+    }, [bearerToken]);
 
     const handleNext = () => {
         if (activeStep === quizContent.elements.length - 1) {
@@ -181,10 +181,6 @@ export default function Quiz() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleDialogClose = () => {
-        setOpenDialog(false);
-    };
-
     const handleFinish = () => {
         console.log(answer);
         axios.post('http://127.0.0.1:3009/user/data',
@@ -204,7 +200,7 @@ export default function Quiz() {
             {quizContent ?
                 <Dialog
                     open={openDialog}
-                    onClose={handleDialogClose}
+                    onClose={() => {}}
                     maxWidth="md"
                     fullWidth
                     PaperProps={{
@@ -254,7 +250,6 @@ export default function Quiz() {
                         >
                             {quizCompleted ? 'Terminer' : 'Suivant'}
                         </Button>
-                        <Button onClick={handleDialogClose}>Fermer</Button>
                     </DialogActions>
                 </Dialog> : <CircularProgress style={{ position: 'absolute', top: '50%', left: '50%', marginTop: '-20px', marginLeft: '-20px' }} />}
         </Container>

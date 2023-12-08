@@ -3,7 +3,7 @@ import { Button, Container, Typography, Card, CardContent, Grid, Box } from '@mu
 import { useNavigate } from 'react-router-dom';
 import Logo1 from '../Assets/image1.jpg';
 import Logo2 from '../Assets/image2.jpg';
-import Logo3 from '../Assets/image3.jpg';
+import Logo3 from '../Assets/image5.jpg';
 import Logo4 from '../Assets/image4.jpg';
 
 const sections = [
@@ -12,29 +12,26 @@ const sections = [
     content: 'Découvrez comment nos actions contribuent à la préservation de l\'environnement.',
     image: Logo1,
     link: 'L\'impact environnemental de nos actions',
-    environmentalDescription: 'Explorez l\'impact positif que nos actions ont sur la planète et comment nous contribuons à la préservation de la biodiversité.',
-  },
+    environmentalDescription: 'Réalité : Utiliser des sacs réutilisables au lieu de sacs en plastique peut considérablement réduire la quantité de déchets plastiques dans les décharges.'},
   {
     title: 'Mythe vs Réalité sur l\'impact environnemental',
     content: 'Démystifions les idées préconçues sur l\'impact environnemental de différentes pratiques.',
     image: Logo2,
     link: 'Mythe vs Réalité sur l\'impact environnemental',
-    environmentalDescription: 'Découvrez la vérité derrière certaines idées reçues sur l\'impact environnemental. Comment nos choix quotidiens peuvent-ils influencer positivement la planète?',
+    environmentalDescription: 'Réalité : Les emballages en plastique peuvent être plus légers et nécessiter moins d\'énergie pour produire, mais la gestion des déchets plastiques est un problème environnemental majeur.',
   },
   {
     title: 'Actions concrètes pour un impact positif',
     content: 'Découvrez les actions pratiques que nous entreprenons pour avoir un impact positif sur l\'environnement.',
     image: Logo4,
     link: 'Actions concrètes pour un impact positif',
-    environmentalDescription: 'Explorez les initiatives que nous prenons pour réduire notre empreinte écologique. Ensemble, nous pouvons créer un changement significatif.',
-  },
+    environmentalDescription: 'Réalité : Éteindre l\'eau pendant le brossage des dents peut économiser des litres d\'eau, contribuant ainsi à une utilisation plus durable des ressources hydriques.'},
   {
     title: 'L\'importance de la sensibilisation',
     content: 'Explorez comment la sensibilisation peut jouer un rôle crucial dans la protection de l\'environnement.',
     image: Logo3,
     link: 'L\'importance de la sensibilisation',
-    environmentalDescription: 'Découvrez comment sensibiliser les autres peut être un catalyseur pour la protection de l\'environnement. Comment votre implication peut-elle inspirer des actions positives?',
-  },
+    environmentalDescription: 'Réalité : Chaque action individuelle compte. La somme des petites actions, comme le recyclage, la réduction des déchets et la conservation de l\'énergie, peut avoir un impact significatif à l\'échelle collective.'},
 ];
 
 export default function LandingPage() {
