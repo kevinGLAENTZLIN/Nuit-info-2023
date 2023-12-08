@@ -8,6 +8,8 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ChartComponent from '../Compenent/graph';
+import { setLocalStorage } from '../Request/Auth';
+import { useNavigate } from 'react-router-dom';
 
 const InfoBox = ({ data }) => {
   return (
@@ -34,6 +36,13 @@ const InfoBoxContainer = ({ infoData }) => {
 
 const Home = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+
+  const signOut = () => {
+    setLocalStorage("bearerToken", null);
+    setLocalStorage("user", null);
+    navigate("/login");
+  }
 
   const handleOpenProfile = (event) => {
     setAnchorEl(event.currentTarget);
@@ -84,7 +93,7 @@ const Home = () => {
           <Typography variant="h6" gutterBottom>
             Mettre l'email
           </Typography>
-          <Button onClick={() => console.log('Déconnexion')}>Déconnexion</Button>
+          <Button onClick={signOut}>Déconnexion</Button>
         </Paper>
       </Popover>
       <div style={{ marginTop: 40 /* ajustez la valeur selon vos besoins */ }}>
