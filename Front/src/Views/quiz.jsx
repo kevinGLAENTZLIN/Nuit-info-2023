@@ -21,6 +21,7 @@ import {
     Select,
     MenuItem,
     Slider,
+    Box,
     CircularProgress
 } from '@mui/material';
 import axios from 'axios';
@@ -200,7 +201,7 @@ export default function Quiz() {
             {quizContent ?
                 <Dialog
                     open={openDialog}
-                    onClose={() => {}}
+                    onClose={() => { }}
                     maxWidth="md"
                     fullWidth
                     PaperProps={{
@@ -236,6 +237,19 @@ export default function Quiz() {
                                         setAnswer={setAnswer}
                                     />
                                 )}
+                                <Box>
+    <Typography variant="h6" style={{ marginTop: '20px' }}>
+        Sources :
+    </Typography>
+    {quizContent.elements[activeStep].sources.map((source, index) => (
+        <Typography key={index} component="div">
+            <a href={source} target="_blank" rel="noopener noreferrer">
+                {source}
+            </a>
+        </Typography>
+    ))}
+</Box>
+
                             </div>
                         )}
                     </DialogContent>
