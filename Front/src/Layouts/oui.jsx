@@ -61,7 +61,7 @@ export default function LandingPage() {
           <Grid item key={index} xs={3}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#A9B388' }}>
               <img src={section.image} alt={`Section ${index + 1}`} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
-              <CardContent sx={{ flexGrow: 1 }}>
+              <CardContent sx={{ flexGrow: 1, margin: '5px' }}>
                 <Typography variant="h5" component="div">
                   {section.title}
                 </Typography>
@@ -77,14 +77,14 @@ export default function LandingPage() {
         ))}
       </Grid>
       {sections.map((section, index) => (
-        <Box key={index} sx={{ marginTop: 4, borderBottom: '1px solid #ccc', backgroundColor: '#faf8e8'}} id={section.link}>
-          <Typography variant="h4" sx={{ marginBottom: 2 }}>
+        <Box key={index} sx={{ marginTop: 4, borderBottom: '1px solid #ccc', backgroundColor: '#faf8e8', borderRadius: 3 }} id={section.link}>
+          <Typography variant="h4" sx={{ marginBottom: 2, margin: '10px' }}>
             {section.title}
           </Typography>
-          <Typography>
+          <Typography sx ={{ margin: '10px'}}>
             {section.bottomContent}
           </Typography>
-          <Box sx={{ marginTop: 2 }}>
+          <Box component="div" sx={{ marginTop: 1, margin: '10px' }}>
             <Typography>
               {section.environmentalDescription}
             </Typography>
