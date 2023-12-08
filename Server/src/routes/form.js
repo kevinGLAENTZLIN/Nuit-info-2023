@@ -53,50 +53,107 @@ const daily = {
     title: "Votre empreinte carbone du jour",
     elements: [
         {
-            title: "Pollution de l'eau",
-            description: "Avez-vous pris des mesures pour réduire la pollution de l'eau aujourd'hui ?",
-            type: "text",
-            isRequired: true,
-            placeHolder: "0kg"
-        },
-        {
-            title: "Transport utilisé",
-            description: "Quel moyen de transport avez-vous utilisé aujourd'hui ?",
-            type: "checkbox",
-            isRequired: true,
-            choices: [ "Train", "Avion", "Voiture", "Bus", "Moto", "Vélo", "Marche" ]
-        },
-        {
-            title: "Consommation d'énergie",
-            description: "Avez-vous fait des efforts pour réduire votre consommation d'énergie ?",
+            title: "Combien de kilomètres avez-vous parcourus en voiture cette semaine ?",
             type: "number",
-            unit: "kWh",
+            unit: "km",
             isRequired: true,
             placeHolder: "0"
         },
         {
-            title: "Gestion des déchets",
-            description: "Comment gérez-vous vos déchets de manière écologique ?",
+            title: "Avez-vous utilisé des transports en commun ? Si oui, lesquels ?",
+            type: "checkbox",
+            isRequired: true,
+            choices: [ "Train", "Avion", "Bus", "Métro", "Tramway", "RER", "Autre" ]
+        },
+        {
+            title: "Avez-vous marché ou utilisé un vélo au lieu de prendre la voiture ?",
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ]
         },
         {
-            title: "Consommation responsable",
-            description: "Adoptez-vous des habitudes de consommation responsable ?",
-            type: "dropdown",
+            title: "Avez-vous fait du covoiturage ou utilisé des services de partage de voiture ?",
+            type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ]
         },
         {
-            title: "Consommation de viande",
-            description: "Combien de viande avez-vous consommé aujourd'hui ?",
+            title: "Avez-vous toujours éteint les lumières en quittant une pièce ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ]
+        },
+        {
+            title: "Avez-vous utilisé des appareils énergivores (climatisation, chauffage, etc.) de manière excessive ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ]
+        },
+        {
+            title: "Avez-vous favorisé des produits locaux et de saison dans votre alimentation ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "A chaque repas", "De temps en temps", "Jamais" ]
+        },
+        {
+            title: "Avez-vous privilégié les protéines végétales ou d'autres alternatives à la viande ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "A chaque repas", "De temps en temps", "Jamais" ]
+        },
+        {
+            title: "Buvez-vous de l'eau en bouteille plastique ou utilisez-vous l'eau du robinet ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "Bouteille plastique", "Eau du robinet" ]
+        },
+        {
+            title: "Avez-vous effectué des achats zéro déchet ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "J'ai acheté des produits en vrac", "J'ai acheté des produits sans emballage", "J'ai acheté des produits avec emballage" ]
+        },
+        {
+            title: "Dans combien de m2 vivez-vous ?",
+            type: "number",
+            unit: "m2",
+            isRequired: true,
+            placeHolder: "0"
+        },
+        {
+            title: "Combien de personnes vivent dans votre logement ?",
+            type: "number",
+            unit: "personnes",
+            isRequired: true,
+            placeHolder: "0"
+        },
+        {
+            title: "Avez-vous utilisé la climatisation cette semaine ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "Oui", "Non" ]
+        },
+        {
+            title: "Avez-vous acheté des vêtements neufs cette semaine ?",
+            type: "radio",
+            isRequired: true,
+            choices: [ "Oui", "Non" ]
+        },
+        {
+            title: "En moyenne, combien d'heures passez-vous sur internet par jour ?",
             type: "range",
             min: 0,
-            max: 1000,
+            max: 24,
             step: 1,
-            unit: "g",
+            unit: "h",
             isRequired: true
+        },
+        {
+            title: "En moyenne, combien de cigarettes fumez-vous par jour ?",
+            type: "number",
+            unit: "cigarettes",
+            isRequired: true,
+            placeHolder: "0"
         }
     ]
 }
