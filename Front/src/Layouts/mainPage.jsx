@@ -22,7 +22,7 @@ function MainPage() {
     checkLoginStatus()
       .then((isAuthenticated) => { 
         if (!isAuthenticated) {
-          navigate('/login');
+          navigate('/');
         }
       });
   }, [navigate]);
