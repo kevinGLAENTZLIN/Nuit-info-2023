@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 
 //@reCAPTCHA---------------------------------------------------------------
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -21,6 +22,7 @@ export default function Login() {
     const [textInfoColor, setTextInfoColor] = useState("red");
     const recaptcha = useRef();
     const recaptcha_key = process.env.REACT_APP_RECAPTCHA_KEY_PUBLIC;
+    const navigate = useNavigate();
 
     const toggleRegistration = () => {
         setShowRegistration(!showRegistration);
@@ -28,6 +30,7 @@ export default function Login() {
         setPassword("");
         setConfirmPassword("");
         setTextInfo("");
+        recaptcha.current.reset();
     };
 
     const togglePasswordVisibility = () => {
@@ -105,8 +108,7 @@ export default function Login() {
             const data = await res.json();
             setLocalStorage("bearerToken", data.token);
             setLocalStorage("user", data.id);
-            setTextInfoColor("green");
-            setTextInfo("Connecté avec succès");
+            navigate("/quiz");
         } else {
             setTextInfoColor("red");
             setTextInfo("Impossible de se connecter au serveur, veuillez réessayer ultérieurement");
