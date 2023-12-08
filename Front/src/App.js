@@ -18,7 +18,7 @@ function Activate() {
       email: searchParams.get('email')
     };
     const query = Object.keys(params).map((key) => `${key}=${encodeURIComponent(params[key])}`).join('&');
-    axios.post(`http://127.0.0.1:3009/auth/activate?${query}`).then((response) => {
+    axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/activate?${query}`).then((response) => {
       console.log(response);
       setActivated(true);
     }).catch((error) => {

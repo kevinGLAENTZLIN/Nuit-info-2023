@@ -149,7 +149,7 @@ export default function Quiz() {
     useEffect(() => {
         setOpenDialog(true);
 
-        axios.get('http://127.0.0.1:3009/form/daily',
+        axios.get(`${process.env.REACT_APP_API_BASE_URL}/form/daily`,
             { headers: { Authorization: `Bearer ${bearerToken}` } }
         ).then((res) => {
             setQuizContent(res.data);
@@ -184,7 +184,7 @@ export default function Quiz() {
 
     const handleFinish = () => {
         console.log(answer);
-        axios.post('http://127.0.0.1:3009/user/data',
+        axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/data`,
             { data: answer },
             { headers: { Authorization: `Bearer ${bearerToken}` }, }
         ).then((res) => {

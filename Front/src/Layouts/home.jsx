@@ -37,7 +37,7 @@ const InfoBoxContainer = ({ infoData }) => {
 
 const getEmail = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:3009/user/${getLocalStorage("user")}`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/${getLocalStorage("user")}`, {
       headers: {
         "Authorization": `Bearer ${getLocalStorage("bearerToken")}`,
       },
@@ -65,7 +65,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchEmail();
-  }, []);  
+  }, []);
 
   const signOut = () => {
     setLocalStorage("bearerToken", null);
@@ -98,11 +98,11 @@ const Home = () => {
       style={{
         position: 'relative',
         width: '100vw',
-        height: '100vh', 
+        height: '100vh',
         textAlign: 'right',
-        backgroundImage: `url(${backgroundImage})`, 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <Snowfall snowflakeCount={100} style={{ zIndex: 1000 }} />

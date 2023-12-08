@@ -88,7 +88,7 @@ export default function Login() {
             recaptcha.current.reset();
             return;
         }
-        const res = await fetch("http://127.0.0.1:3009/auth/login", {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, {
             method: 'POST',
             body: JSON.stringify({
                 email: email.toLowerCase(),
@@ -127,7 +127,7 @@ export default function Login() {
             return;
         }
         try {
-            const res = await fetch("http://127.0.0.1:3009/auth/register", {
+            const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/auth/register`, {
                 method: 'POST',
                 body: JSON.stringify({
                     email: email,
