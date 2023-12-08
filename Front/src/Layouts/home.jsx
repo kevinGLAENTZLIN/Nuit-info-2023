@@ -97,8 +97,8 @@ const Home = () => {
     <div
       style={{
         position: 'relative',
-        paddingTop: 16,
-        paddingRight: 16,
+        width: '100vw',
+        height: '100vh', 
         textAlign: 'right',
         backgroundImage: `url(${backgroundImage})`, 
         backgroundSize: 'cover', 
