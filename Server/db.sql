@@ -17,11 +17,12 @@ CREATE TABLE `user` (
 
 CREATE TABLE `user_daily_data` (
   `user_id` INT UNSIGNED NOT NULL,
-  `date` DATE NOT NULL,
+  `year` INT UNSIGNED NOT NULL,
+  `week` INT UNSIGNED NOT NULL,
   `data` JSON NOT NULL,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
-  PRIMARY KEY (`user_id`, `date`)
+  PRIMARY KEY (`user_id`, `year`, `week`)
 );
 
 

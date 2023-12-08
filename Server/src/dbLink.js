@@ -87,24 +87,21 @@ class DbManager {
         return this.executeQuery(query, values);
     }
 
-    getUserDailyData(userId, date) {
-        date.setHours(0, 0, 0, 0);
-        const query = `SELECT * FROM user_daily_data WHERE user_id = ? AND date = ?;`;
-        const values = [userId, date];
+    getUserDailyData(userId, year, week) {
+        const query = `SELECT * FROM user_daily_data WHERE user_id = ? AND year = ? AND week = ?;`;
+        const values = [userId, year, week];
         return this.executeQuery(query, values);
     }
 
-    insertUserDailyData(userId, date, data) {
-        date.setHours(0, 0, 0, 0);
-        const query = 'INSERT INTO user_daily_data(user_id, date, data) VALUES (?, ?, ?)';
-        const values = [userId, date, data];
+    insertUserDailyData(userId, year, week, data) {
+        const query = 'INSERT INTO user_daily_data(user_id, year, week, data) VALUES (?, ?, ?, ?)';
+        const values = [userId, year, week, data];
         return this.executeQuery(query, values);
     }
 
-    updateUserDailyData(userId, date, data) {
-        date.setHours(0, 0, 0, 0);
-        const query = `UPDATE user_daily_data SET data = ? WHERE user_id = ? AND date = ?;`;
-        const values = [data, userId, date];
+    updateUserDailyData(userId, year, week, data) {
+        const query = `UPDATE user_daily_data SET data = ? WHERE user_id = ? AND year = ? AND week = ?;`;
+        const values = [data, userId, year, week];
         return this.executeQuery(query, values);
     }
 }
