@@ -17,10 +17,9 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [textInfo, setTextInfo] = useState("");
     const recaptcha = useRef();
     const recaptcha_key = process.env.REACT_APP_RECAPTCHA_KEY_PUBLIC;
-    console.log(process.env);
-    console.log(recaptcha_key);
 
     const toggleRegistration = () => {
         setShowRegistration(!showRegistration);
@@ -36,7 +35,7 @@ export default function Login() {
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
-    }
+    };
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
@@ -46,20 +45,38 @@ export default function Login() {
         setConfirmPassword(event.target.value);
     };
 
+    function check_input(captchaValue) {
+        if (!captchaValue) {
+            setTextInfo("Veuillez vérifier le captcha");
+            return false;
+        }
+        if (email === "" || email === null) {
+            setTextInfo("Veuillez préciser votre adresse mail");
+            return false;
+        }
+        if (password === "" || password === null) {
+            setTextInfo("Aucun mot de passe n'a été indiqué");
+            return false;
+        }
+        if (showRegistration) {
+            if (confirmPassword === "" || confirmPassword === null) {
+                setTextInfo("Veuillez vérifier votre mot de passe");
+                return false;
+            }
+            if (password !== confirmPassword) {
+                setTextInfo("Vos mots de passe ne sont pas identiques");
+                return false;
+            }
+        }
+        return true;
+    };
+
     async function login(event) {
         const captchaValue = recaptcha.current.getValue();
 
         event.preventDefault();
-        if (!captchaValue) {
-            alert("Veuillez vérifier le captcha");
-            return;
-        }
-        if (email === "") {
-            alert("Veuillez préciser votre adresse mail");
-            return;
-        }
-        if (password === "") {
-            alert("Aucun mot de passe n'a été indiqué");
+
+        if (check_input(captchaValue) === false) {
             return;
         }
         const res = await fetch("http://127.0.0.1:3009/auth/login", {
@@ -76,350 +93,211 @@ export default function Login() {
 
         if (res.status === 400 || res.status === 500) {
             const error = await res.json();
-            console.log("Error:", error);
+            console.error("Error:", error);
         } else if (res.status === 201) {
             const data = await res.json();
             setLocalStorage("bearerToken", data.token);
-            console.log(data.token);
             setLocalStorage("user", data.id);
         } else {
             throw new Error("Unexpected response from server");
         }
-    }
+    };
 
-    async function submitForm(event) {
+    async function register(event) {
         const captchaValue = recaptcha.current.getValue();
 
         event.preventDefault();
-        if (!captchaValue) {
-            alert("Veuillez vérifier le captcha");
-        } else {
-            if (email === "") {
-                alert("Veuillez entrer une adresse mail");
-                return;
-            }
-            if (!email.includes('@')) {
-                alert("Veuillez rentrer une adresse mail valide");
-                return;
-            }
-            if (password === "") {
-                alert("Veuillez entrer un mot de passe");
-                return;
-            }
-            try {
-                const res = await fetch("http://127.0.0.1:3009/auth/login", {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        email: email,
-                        password: password,
-                        captcha: captchaValue,
-                    }),
-                    headers: {
-                        'content-type': 'application/json',
-                    },
-                });
+        if (check_input(captchaValue) === false) {
+            return;
+        }
+        try {
+            const res = await fetch("http://127.0.0.1:3009/auth/login", {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    captcha: captchaValue,
+                }),
+                headers: {
+                    'content-type': 'application/json',
+                },
+            });
 
-                if (res.status === 400 || res.status === 500) {
-                    const error = await res.json();
-                    console.log("Error:", error);
-                } else if (res.status === 201) {
-                    const data = await res.json();
-                    setLocalStorage("bearerToken", data.token);
-                    setLocalStorage("user", data.id);
-                } else {
-                    throw new Error("Unexpected response from server");
-                }
-            } catch (error) {
-                console.log("Error:", error);
+            // 400 : compte déjà existant
+            // 500 : Erreur de connexion
+            if (res.status === 400 || res.status === 500) {
+                console.error("Error:", res.json());
+                setTextInfo(res.json().msg);
+            } else if (res.status === 201) {
+                const data = await res.json();
+                setTextInfo(data.msg);
+            } else {
+                setTextInfo("Impossible de se connecter au serveur, veuillez réessayer");
+                throw new Error("Unexpected response from server");
             }
-
-            console.log({
-                email: email,
-                password: password,
-                captcha: captchaValue,
-            })
-            if (confirmPassword === "") {
-                alert("Veuillez vérifier votre mot de passe");
-                return;
-            }
-            if (password !== confirmPassword) {
-                alert("Vos mots de passe ne sont pas identiques");
-                return;
-            }
-            alert("Registered successfully");
+        } catch (err) {
+            console.error(err);
         }
     }
 
-    const isMobile = useMediaQuery('(max-width:600px)');
-
     return (
         <>
-            {isMobile ? (
-                //@Mobile version----------------------------------------------------
-                <Container>
+            <Box
+                sx={{
+                    height: '100vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    position: 'relative',
+                }}
+            >
+                <img
+                    src={"https://source.unsplash.com/random"}
+                    alt={"background"}
+                    style={{
+                        filter: 'brightness(50%)',
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover',
+                        width: '100%',
+                        maxHeight: '100vh',
+                        objectFit: 'cover',
+                        position: 'absolute',
+                        objectPosition: 'center',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: -1,
+                    }}
+                />
+                <Container
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
                     <Box
                         sx={{
-                            height: '100vh',
+                            height: '60vh',
+                            width: '60vh',
+                            backgroundColor: 'white',
+                            borderRadius: 4,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
+                            alignContent: 'center',
                         }}
                     >
                         <h1 style={{
-                            marginBottom: showRegistration ? '2rem' : '5rem',
+                            marginBottom: '2rem',
                             fontSize: '2rem'
                         }}>
                             {showRegistration ? 'Inscription' : 'Connexion'}
                         </h1>
-
-                        <TextField
+                        <h3>
+                            {textInfo}
+                        </h3>
+                        <Box
+                            component="form"
                             sx={{
-                                width: '100%',
-                                marginBottom: '1rem',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                             }}
-                            type='email'
-                            label="Adresse mail"
-                            value={email}
-                            onChange={handleEmail}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <AccountCircleIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            sx={{
-                                width: '100%',
-                                marginBottom: '1rem',
-                            }}
-                            label="Mot de passe"
-                            type={showPassword ? 'text' : 'password'}
-                            value={password}
-                            onChange={handlePasswordChange}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        {showPassword ? (
-                                            <VisibilityIcon
-                                                onClick={togglePasswordVisibility}
-                                            />
-                                        ) : (
-                                            <VisibilityOffIcon
-                                                onClick={togglePasswordVisibility}
-                                            />
-                                        )}
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        {showRegistration && (
+                        >
                             <TextField
                                 sx={{
-                                    width: '100%',
+                                    width: '55vh',
                                     marginBottom: '1rem',
                                 }}
-                                label="Confirmer votre mot de passe"
-                                value={confirmPassword}
-                                onChange={handleConfirmPasswordChange}
-                                type={showConfirmPassword ? 'text' : 'password'}
+                                type='email'
+                                label="Adresse mail"
+                                value={email}
+                                onChange={handleEmail}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            {showConfirmPassword ? (
+                                            <AccountCircleIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                            <TextField
+                                sx={{
+                                    width: '55vh',
+                                    marginBottom: '1rem',
+                                }}
+                                label="Mot de passe"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={handlePasswordChange}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            {showPassword ? (
                                                 <VisibilityIcon
-                                                    onClick={toggleConfirmPasswordVisibility}
+                                                    onClick={togglePasswordVisibility}
                                                 />
                                             ) : (
                                                 <VisibilityOffIcon
-                                                    onClick={toggleConfirmPasswordVisibility}
+                                                    onClick={togglePasswordVisibility}
                                                 />
                                             )}
                                         </InputAdornment>
                                     ),
                                 }}
                             />
-                        )}
-                        <ReCAPTCHA
-                            sitekey={recaptcha_key}
-                            ref={recaptcha}
-                            sx={{
-                                marginBottom: '1rem',
-                            }}
-                        />
-                        <Button onClick={showRegistration ? submitForm : login} variant="contained" type="submit" sx={{ width: '20vh' }}>
-                            {showRegistration ? "S'enregistrer" : 'Se connecter'}
-                        </Button>
-                        <Button
-                            variant="text"
-                            sx={{ marginTop: '1rem' }}
-                            onClick={toggleRegistration}
-                        >
-                            {showRegistration
-                                ? 'Retour à la connexion'
-                                : 'Pas encore membre ? Inscrivez-vous ici'}
-                        </Button>
-                    </Box>
-                </Container>
-            ) : (
-                //--------------------------------------------------------------- VERSION PC
-                <Box
-                    sx={{
-                        height: '100vh',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                        position: 'relative',
-                    }}
-                >
-                    <img
-                        src={"https://source.unsplash.com/random"}
-                        alt={"background"}
-                        style={{
-                            filter: 'brightness(50%)',
-                            backgroundPosition: 'center',
-                            backgroundSize: 'cover',
-                            width: '100%',
-                            maxHeight: '100vh',
-                            objectFit: 'cover',
-                            position: 'absolute',
-                            objectPosition: 'center',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            zIndex: -1,
-                        }}
-                    />
-                    <Container
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                height: '60vh',
-                                width: '60vh',
-                                backgroundColor: 'white',
-                                borderRadius: 4,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                            }}
-                        >
-                            <h1 style={{
-                                marginBottom: showRegistration ? '2rem' : '5rem',
-                                fontSize: '2rem'
-                            }}>
-                                {showRegistration ? 'Inscription' : 'Connexion'}
-                            </h1>
-
-                            <Box
-                                component="form"
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
+                            {showRegistration && (
                                 <TextField
                                     sx={{
                                         width: '55vh',
                                         marginBottom: '1rem',
                                     }}
-                                    type='email'
-                                    label="Adresse mail"
-                                    value={email}
-                                    onChange={handleEmail}
+                                    label="Confirmer votre mot de passe"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    value={confirmPassword}
+                                    onChange={handleConfirmPasswordChange}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <AccountCircleIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                <TextField
-                                    sx={{
-                                        width: '55vh',
-                                        marginBottom: '1rem',
-                                    }}
-                                    label="Mot de passe"
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={handlePasswordChange}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                {showPassword ? (
+                                                {showConfirmPassword ? (
                                                     <VisibilityIcon
-                                                        onClick={togglePasswordVisibility}
+                                                        onClick={toggleConfirmPasswordVisibility}
                                                     />
                                                 ) : (
                                                     <VisibilityOffIcon
-                                                        onClick={togglePasswordVisibility}
+                                                        onClick={toggleConfirmPasswordVisibility}
                                                     />
                                                 )}
                                             </InputAdornment>
                                         ),
                                     }}
                                 />
-                                {showRegistration && (
-                                    <TextField
-                                        sx={{
-                                            width: '55vh',
-                                            marginBottom: '1rem',
-                                        }}
-                                        label="Confirmer votre mot de passe"
-                                        type={showConfirmPassword ? 'text' : 'password'}
-                                        value={confirmPassword}
-                                        onChange={handleConfirmPasswordChange}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    {showConfirmPassword ? (
-                                                        <VisibilityIcon
-                                                            onClick={toggleConfirmPasswordVisibility}
-                                                        />
-                                                    ) : (
-                                                        <VisibilityOffIcon
-                                                            onClick={toggleConfirmPasswordVisibility}
-                                                        />
-                                                    )}
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                )}
-                                <ReCAPTCHA
-                                    sitekey={recaptcha_key}
-                                    ref={recaptcha}
-                                />
-                                <Button onClick={showRegistration ? submitForm : login} variant="contained" type="submit" sx={{ marginTop: '1rem', width: '20vh' }}>
-                                    {showRegistration ? 'S\'enregistrer' : 'Se connecter'}
-                                </Button>
-                                <Button
-                                    variant="text"
-                                    sx={{ marginTop: '1rem' }}
-                                    onClick={toggleRegistration}
-                                >
-                                    {showRegistration
-                                        ? 'Retour à la connexion'
-                                        : 'Pas encore membre ? Inscrivez-vous ici'}
-                                </Button>
-                            </Box>
+                            )}
+                            <ReCAPTCHA
+                                sitekey={recaptcha_key}
+                                ref={recaptcha}
+                            />
+                            <Button onClick={showRegistration ? register : login} variant="contained" type="submit" sx={{ marginTop: '1rem', width: '20vh' }}>
+                                {showRegistration ? 'S\'enregistrer' : 'Se connecter'}
+                            </Button>
+                            <Button
+                                variant="text"
+                                sx={{ marginTop: '1rem' }}
+                                onClick={toggleRegistration}
+                            >
+                                {showRegistration
+                                    ? 'Retour à la connexion'
+                                    : 'Pas encore membre ? Inscrivez-vous ici'}
+                            </Button>
                         </Box>
-                    </Container>
-                </Box>
-            )}
+                    </Box>
+                </Container>
+            </Box>
         </>
     )
-};
+}
