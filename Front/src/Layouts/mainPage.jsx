@@ -15,17 +15,13 @@ import {ColorModeContext, useMode} from "../Theme/theme";
 // ----------------------------------------------------------------------
 
 function MainPage() {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [theme, colorMode] = useMode();
   const navigate = useNavigate();
 
   React.useEffect(() => {
     checkLoginStatus()
       .then((isAuthenticated) => { 
-        if (isAuthenticated) {
-          setIsLoggedIn(true);
-          navigate('/quiz');
-        } else {
+        if (!isAuthenticated) {
           navigate('/login');
         }
       });
