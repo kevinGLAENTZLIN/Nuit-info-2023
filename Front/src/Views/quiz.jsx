@@ -32,63 +32,74 @@ function InputType({ elem, answer, setAnswer }) {
     switch (elem.type) {
         case 'text':
             return (
-                <TextField
-                    label={elem.placeHolder}
-                    fullWidth
-                    style={{ marginTop: '10px' }}
-                    onChange={(event) => setAnswer({ ...answer, [elem.title]: event.target.value })}
-                />
+                <div>
+                    <FormLabel component="legend">{elem.title}</FormLabel>
+                    <TextField
+                        label={elem.placeHolder}
+                        fullWidth
+                        style={{ marginTop: '10px' }}
+                        onChange={(event) => setAnswer({ ...answer, [elem.name]: event.target.value })}
+                    />
+                </div>
             );
         case 'checkbox':
             return (
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">{elem.label}</FormLabel>
-                    {elem.choices.map((choice, index) => (
-                        <FormControlLabel
-                            key={index}
-                            control={<Checkbox
-                                onClick={() => {
-                                    if (answer && answer[elem.title] && answer[elem.title].includes(choice))
-                                        setAnswer({ ...answer, [elem.title]: answer[elem.title].filter((e) => e !== choice) });
-                                    else if (answer && answer[elem.title])
-                                        setAnswer({ ...answer, [elem.title]: [...answer[elem.title], choice] });
-                                    else
-                                        setAnswer({ ...answer, [elem.title]: [choice] });
-                                }} />}
-                            label={choice}
-                        />
-                    ))}
-                </FormControl>
-            );
-        case 'radio':
-            return (
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">{elem.label}</FormLabel>
-                    <RadioGroup>
+                <div>
+                    <FormLabel component="legend">{elem.title}</FormLabel>
+                    <FormControl component="fieldset">
                         {elem.choices.map((choice, index) => (
                             <FormControlLabel
                                 key={index}
-                                value={choice}
-                                control={<Radio onClick={() => setAnswer({ ...answer, [elem.title]: choice })} />}
+                                control={<Checkbox
+                                    onClick={() => {
+                                        if (answer && answer[elem.name] && answer[elem.name].includes(choice))
+                                            setAnswer({ ...answer, [elem.name]: answer[elem.name].filter((e) => e !== choice) });
+                                        else if (answer && answer[elem.name])
+                                            setAnswer({ ...answer, [elem.name]: [...answer[elem.name], choice] });
+                                        else
+                                            setAnswer({ ...answer, [elem.name]: [choice] });
+                                    }} />}
                                 label={choice}
                             />
                         ))}
-                    </RadioGroup>
-                </FormControl>
+                    </FormControl>
+                </div>
+            );
+        case 'radio':
+            return (
+                <div>
+                    <FormLabel component="legend">{elem.title}</FormLabel>
+                    <FormControl component="fieldset">
+                        <RadioGroup>
+                            {elem.choices.map((choice, index) => (
+                                <FormControlLabel
+                                    key={index}
+                                    value={choice}
+                                    control={<Radio onClick={() => setAnswer({ ...answer, [elem.name]: choice })} />}
+                                    label={choice}
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                </div>
             );
         case 'number':
             return (
-                <TextField
-                    type="number"
-                    label={elem.placeHolder}
-                    fullWidth
-                    style={{ marginTop: '10px' }}
-                    onChange={(event) => setAnswer({ ...answer, [elem.title]: event.target.value })}
-                />
+                <div>
+                    <FormLabel component="legend">{elem.title}</FormLabel>
+                    <TextField
+                        type="number"
+                        label={elem.placeHolder}
+                        fullWidth
+                        style={{ marginTop: '10px' }}
+                        onChange={(event) => setAnswer({ ...answer, [elem.name]: event.target.value })}
+                    />
+                </div>
             );
         case 'range':
             return (
                 <div>
+                    <FormLabel component="legend">{elem.title}</FormLabel>
                     <Typography id="slider-value">{sliderValue}</Typography>
                     <Slider
                         value={sliderValue}
@@ -96,7 +107,7 @@ function InputType({ elem, answer, setAnswer }) {
                         max={elem.max}
                         onChange={(event, newValue) => {
                             setSliderValue(newValue);
-                            setAnswer({ ...answer, [elem.title]: newValue });
+                            setAnswer({ ...answer, [elem.name]: newValue });
                         }}
                         aria-labelledby="slider-value"
                     />
@@ -104,18 +115,21 @@ function InputType({ elem, answer, setAnswer }) {
             );
         case 'dropdown':
             return (
-                <FormControl fullWidth style={{ marginTop: '10px' }}>
-                    <Select
-                        value={answer ? (answer[elem.title] ?? '') : ''}
-                        onChange={(event) => setAnswer({ ...answer, [elem.title]: event.target.value })}
-                    >
-                        {elem.choices.map((choice, index) => (
-                            <MenuItem key={index} value={choice}>
-                                {choice}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <div>
+                    <FormLabel component="legend">{elem.title}</FormLabel>
+                    <FormControl fullWidth style={{ marginTop: '10px' }}>
+                        <Select
+                            value={answer ? (answer[elem.name] ?? '') : ''}
+                            onChange={(event) => setAnswer({ ...answer, [elem.name]: event.target.value })}
+                        >
+                            {elem.choices.map((choice, index) => (
+                                <MenuItem key={index} value={choice}>
+                                    {choice}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </div>
             );
         default:
             return null;
@@ -139,7 +153,7 @@ export default function Quiz() {
         ).then((res) => {
             setQuizContent(res.data);
             for (let i = 0; i < res.data.elements.length; i++) {
-                setAnswer(a => ({ ...a, [res.data.elements[i].title]: null }));
+                setAnswer(a => ({ ...a, [res.data.elements[i].name]: null }));
             }
         }).catch((err) => {
             console.error(err);
@@ -151,9 +165,15 @@ export default function Quiz() {
             setQuizCompleted(true);
         } else {
             setActiveStep((prevActiveStep) => {
-                setAnswer({ ...answer, [quizContent.elements[prevActiveStep + 1].title]: null });
-                return prevActiveStep + 1
+                setAnswer({ ...answer, [quizContent.elements[prevActiveStep + 1].name]: null });
+                return prevActiveStep + 1;
             });
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleNext();
         }
     };
 
@@ -180,14 +200,26 @@ export default function Quiz() {
     };
 
     return (
-        <Container>
+        <Container onKeyDown={handleKeyPress}>
             {quizContent ?
-                <Dialog open={openDialog} onClose={handleDialogClose}>
+                <Dialog
+                    open={openDialog}
+                    onClose={handleDialogClose}
+                    maxWidth="md"
+                    fullWidth
+                    PaperProps={{
+                        style: {
+                            width: '100%',
+                            maxWidth: '100%',
+                            height: '100vh',
+                        },
+                    }}
+                >
                     <DialogTitle>{quizContent.title}</DialogTitle>
                     <DialogContent style={{ marginBottom: '20px' }}>
                         <Stepper activeStep={activeStep} alternativeLabel>
                             {quizContent.elements.map((elem) => (
-                                <Step key={elem.title}>
+                                <Step key={elem.name}>
                                     <StepLabel>{elem.title}</StepLabel>
                                 </Step>
                             ))}
@@ -200,11 +232,17 @@ export default function Quiz() {
                                 <Typography style={{ marginTop: '20px' }}>
                                     {quizContent.elements[activeStep].description}
                                 </Typography>
-                                {!quizCompleted && <InputType elem={quizContent.elements[activeStep]} answer={answer} setAnswer={setAnswer} />}
+                                {!quizCompleted && (
+                                    <InputType
+                                        key={quizContent.elements[activeStep].name}
+                                        elem={quizContent.elements[activeStep]}
+                                        answer={answer}
+                                        setAnswer={setAnswer}
+                                    />
+                                )}
                             </div>
                         )}
                     </DialogContent>
-
                     <DialogActions>
                         <Button disabled={activeStep === 0} onClick={handleBack}>
                             Retour

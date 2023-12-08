@@ -53,6 +53,7 @@ const daily = {
     title: "Votre empreinte carbone du jour",
     elements: [
         {
+            name: "kilometers_car",
             title: "Combien de kilomètres avez-vous parcourus en voiture cette semaine ?",
             type: "number",
             unit: "km",
@@ -60,60 +61,70 @@ const daily = {
             placeHolder: "0"
         },
         {
+            name: "public_transport",
             title: "Avez-vous utilisé des transports en commun ? Si oui, lesquels ?",
             type: "checkbox",
             isRequired: true,
             choices: [ "Train", "Avion", "Bus", "Métro", "Tramway", "RER", "Autre" ]
         },
         {
+            name: "bike_walk",
             title: "Avez-vous marché ou utilisé un vélo au lieu de prendre la voiture ?",
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ]
         },
         {
+            name: "carpooling",
             title: "Avez-vous fait du covoiturage ou utilisé des services de partage de voiture ?",
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ]
         },
         {
+            name: "turn_off_lights",
             title: "Avez-vous toujours éteint les lumières en quittant une pièce ?",
             type: "radio",
             isRequired: true,
             choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ]
         },
         {
+            name: "excessive_use_of_devices",
             title: "Avez-vous utilisé des appareils énergivores (climatisation, chauffage, etc.) de manière excessive ?",
             type: "radio",
             isRequired: true,
             choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ]
         },
         {
+            name: "local_and_seasonal_food",
             title: "Avez-vous favorisé des produits locaux et de saison dans votre alimentation ?",
             type: "radio",
             isRequired: true,
             choices: [ "A chaque repas", "De temps en temps", "Jamais" ]
         },
         {
+            name: "plant_protein_instead_of_meat",
             title: "Avez-vous privilégié les protéines végétales ou d'autres alternatives à la viande ?",
             type: "radio",
             isRequired: true,
             choices: [ "A chaque repas", "De temps en temps", "Jamais" ]
         },
         {
+            name: "water_bottle_or_tap_water",
             title: "Buvez-vous de l'eau en bouteille plastique ou utilisez-vous l'eau du robinet ?",
             type: "radio",
             isRequired: true,
             choices: [ "Bouteille plastique", "Eau du robinet" ]
         },
         {
+            name: "zero_waste_purchases",
             title: "Avez-vous effectué des achats zéro déchet ?",
             type: "radio",
             isRequired: true,
             choices: [ "J'ai acheté des produits en vrac", "J'ai acheté des produits sans emballage", "J'ai acheté des produits avec emballage" ]
         },
         {
+            name: "area_of_living",
             title: "Dans combien de m2 vivez-vous ?",
             type: "number",
             unit: "m2",
@@ -121,6 +132,7 @@ const daily = {
             placeHolder: "0"
         },
         {
+            name: "number_of_people_in_house",
             title: "Combien de personnes vivent dans votre logement ?",
             type: "number",
             unit: "personnes",
@@ -128,18 +140,21 @@ const daily = {
             placeHolder: "0"
         },
         {
+            name: "usage_of_air_conditioning",
             title: "Avez-vous utilisé la climatisation cette semaine ?",
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ]
         },
         {
+            name: "buying_new_clothes",
             title: "Avez-vous acheté des vêtements neufs cette semaine ?",
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ]
         },
         {
+            name: "time_spent_on_internet",
             title: "En moyenne, combien d'heures passez-vous sur internet par jour ?",
             type: "range",
             min: 0,
@@ -149,6 +164,7 @@ const daily = {
             isRequired: true
         },
         {
+            name: "number_of_cigarettes",
             title: "En moyenne, combien de cigarettes fumez-vous par jour ?",
             type: "number",
             unit: "cigarettes",
