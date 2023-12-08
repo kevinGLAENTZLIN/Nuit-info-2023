@@ -19,8 +19,3 @@ CREATE TABLE `user_daily_data` (
   FOREIGN KEY (`user_id`) REFERENCES `user`(`id`),
   PRIMARY KEY (`user_id`, `year`, `week`)
 );
-
-
--- test
-
-INSERT INTO `user` (`email`, `password`) VALUES ('martin.d-herouville@epitech.eu', '$2a$10$uh/6kOxhYtTB6c7r1vVCd.T5Q4MZeYC86zbrpoY9goK35rBfwbM.W');
