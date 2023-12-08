@@ -238,17 +238,23 @@ export default function Quiz() {
                                     />
                                 )}
                                 <Box>
-    <Typography variant="h6" style={{ marginTop: '20px' }}>
-        Sources :
-    </Typography>
-    {quizContent.elements[activeStep].sources.map((source, index) => (
-        <Typography key={index} component="div">
-            <a href={source} target="_blank" rel="noopener noreferrer">
-                {source}
-            </a>
-        </Typography>
-    ))}
-</Box>
+                                    <Typography variant="h6" style={{ marginTop: '20px' }}>
+                                        Sources :
+                                    </Typography>
+                                    {(quizContent.elements[activeStep].sources).length !== 0 ? (
+                                        quizContent.elements[activeStep].sources.map((source, index) => (
+                                            <Typography key={index} component="div">
+                                                <a href={source.url} target="_blank" rel="noopener noreferrer">
+                                                    {source.title}
+                                                </a>
+                                            </Typography>
+                                        ))
+                                    ) : (
+                                        <Typography component="div">
+                                            Aucune source disponible.
+                                        </Typography>
+                                    )}
+                                </Box>
 
                             </div>
                         )}
