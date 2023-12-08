@@ -1,6 +1,7 @@
 import express from "express";
 import { db, verifyToken, getIdFromToken } from "../global.js";
 import DbManager from "../dbLink.js";
+import { daily } from "./form.js";
 
 Date.prototype.getWeekNumber = function () {
     var d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
@@ -52,6 +53,45 @@ router.post("/", verifyToken, (req, res) => {
             }).catch((err) => {
                 res.status(500).json({ msg: "Internal server error", error: err });
             });
+        }
+    }).catch((err) => {
+        res.status(500).json({ msg: "Internal server error", error: err });
+    });
+});
+
+router.post("/process/:year/:week", verifyToken, (req, res) => {
+    let somme = 0;
+    const userId = getIdFromToken(req, res); if (userId === -1) return;
+    db.getUserDailyData(userId, req.params.year, req.params.week).then((rows) => {
+        if (rows[0]) {
+            const data = JSON.parse(rows[0].data);
+            Object.keys(data).forEach((key) => {
+                const node = daily.elements.find((element) => element.name === key);
+                let weight = node.weight;
+                if (node.type === "radio" || node.type === "dropdown") {
+                    const position = node.choices.indexOf(data[key]);
+                    if (position === -1)
+                        weight = 0;
+                    else
+                        weight = node.weight[position];
+                } else if (node.type === "checkbox") {
+                    let totalWeight = 0;
+                    data[key].forEach((choice) => {
+                        const position = node.choices.indexOf(choice);
+                        if (position !== -1)
+                            totalWeight += node.weight[position];
+                    });
+                    weight = totalWeight;
+                } else {
+                    weight = weight;
+                }
+                console.log("RESULTAT: " + weight);
+                somme += weight;
+            });
+            console.log("somme", somme);
+            res.json(data);
+        } else {
+            res.status(404).json({ msg: "User weekly data not found" });
         }
     }).catch((err) => {
         res.status(500).json({ msg: "Internal server error", error: err });

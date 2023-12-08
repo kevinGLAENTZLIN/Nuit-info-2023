@@ -49,7 +49,7 @@ const test = {
     ]
 }
 
-const daily = {
+export const daily = {
     title: "Votre empreinte carbone du jour",
     elements: [
         {
@@ -58,70 +58,80 @@ const daily = {
             type: "number",
             unit: "km",
             isRequired: true,
-            placeHolder: "0"
+            placeHolder: "0",
+            weight: 1
         },
         {
             name: "public_transport",
             title: "Avez-vous utilisé des transports en commun ? Si oui, lesquels ?",
             type: "checkbox",
             isRequired: true,
-            choices: [ "Train", "Avion", "Bus", "Métro", "Tramway", "RER", "Autre" ]
+            choices: [ "Train", "Avion", "Bus", "Métro", "Tramway", "RER", "Autre" ],
+            weight: [ 0.1, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1 ]
         },
         {
             name: "bike_walk",
             title: "Avez-vous marché ou utilisé un vélo au lieu de prendre la voiture ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Oui", "Non" ]
+            choices: [ "Oui", "Non" ],
+            weight: [ -0.1, 0.1 ]
         },
         {
             name: "carpooling",
             title: "Avez-vous fait du covoiturage ou utilisé des services de partage de voiture ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Oui", "Non" ]
+            choices: [ "Oui", "Non" ],
+            weight: [ -0.1, 0.1 ]
         },
         {
             name: "turn_off_lights",
             title: "Avez-vous toujours éteint les lumières en quittant une pièce ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ]
+            choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ],
+            weight: [ 0.1, 0.05, 0.01, 0 ]
         },
         {
             name: "excessive_use_of_devices",
             title: "Avez-vous utilisé des appareils énergivores (climatisation, chauffage, etc.) de manière excessive ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ]
+            choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ],
+            weight: [ 0.1, 0.05, 0.01, 0 ]
         },
         {
             name: "local_and_seasonal_food",
             title: "Avez-vous favorisé des produits locaux et de saison dans votre alimentation ?",
             type: "radio",
             isRequired: true,
-            choices: [ "A chaque repas", "De temps en temps", "Jamais" ]
+            choices: [ "A chaque repas", "De temps en temps", "Jamais" ],
+            weight: [ -0.1, 0.1, 0.2 ]
         },
         {
             name: "plant_protein_instead_of_meat",
             title: "Avez-vous privilégié les protéines végétales ou d'autres alternatives à la viande ?",
             type: "radio",
             isRequired: true,
-            choices: [ "A chaque repas", "De temps en temps", "Jamais" ]
+            choices: [ "A chaque repas", "De temps en temps", "Jamais" ],
+            weight: [ -0.1, 0.1, 0.2 ]
         },
         {
             name: "water_bottle_or_tap_water",
             title: "Buvez-vous de l'eau en bouteille plastique ou utilisez-vous l'eau du robinet ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Bouteille plastique", "Eau du robinet" ]
+            choices: [ "Bouteille plastique", "Eau du robinet" ],
+            weight: [ 0.1, -0.1 ]
         },
         {
             name: "zero_waste_purchases",
             title: "Avez-vous effectué des achats zéro déchet ?",
             type: "radio",
             isRequired: true,
-            choices: [ "J'ai acheté des produits en vrac", "J'ai acheté des produits sans emballage", "J'ai acheté des produits avec emballage" ]
+            choices: [ "J'ai acheté des produits en vrac", "J'ai acheté des produits sans emballage", "J'ai acheté des produits avec emballage" ],
+            weight: [ -0.1, 0.1, 0.2 ]
         },
         {
             name: "area_of_living",
@@ -129,7 +139,8 @@ const daily = {
             type: "number",
             unit: "m2",
             isRequired: true,
-            placeHolder: "0"
+            placeHolder: "0",
+            weight: 1
         },
         {
             name: "number_of_people_in_house",
@@ -137,21 +148,24 @@ const daily = {
             type: "number",
             unit: "personnes",
             isRequired: true,
-            placeHolder: "0"
+            placeHolder: "0",
+            weight: 1
         },
         {
             name: "usage_of_air_conditioning",
             title: "Avez-vous utilisé la climatisation cette semaine ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Oui", "Non" ]
+            choices: [ "Oui", "Non" ],
+            weight: [ 0.1, 0.1 ]
         },
         {
             name: "buying_new_clothes",
             title: "Avez-vous acheté des vêtements neufs cette semaine ?",
             type: "radio",
             isRequired: true,
-            choices: [ "Oui", "Non" ]
+            choices: [ "Oui", "Non" ],
+            weight: [ 0.1, 0.1 ]
         },
         {
             name: "time_spent_on_internet",
@@ -161,7 +175,8 @@ const daily = {
             max: 24,
             step: 1,
             unit: "h",
-            isRequired: true
+            isRequired: true,
+            weight: 1
         },
         {
             name: "number_of_cigarettes",
@@ -169,7 +184,8 @@ const daily = {
             type: "number",
             unit: "cigarettes",
             isRequired: true,
-            placeHolder: "0"
+            placeHolder: "0",
+            weight: 1
         }
     ]
 }
