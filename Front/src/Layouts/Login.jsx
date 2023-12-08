@@ -6,7 +6,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 //@MUI---------------------------------------------------------------
 import { Box, Container, TextField, Button, InputAdornment } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EmailIcon from '@mui/icons-material/Email';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { setLocalStorage } from '../Request/Auth';
@@ -85,6 +85,7 @@ export default function Login() {
         event.preventDefault();
 
         if (check_input(captchaValue) === false) {
+            recaptcha.current.reset();
             return;
         }
         const res = await fetch("http://127.0.0.1:3009/auth/login", {
@@ -114,6 +115,7 @@ export default function Login() {
             setTextInfo("Impossible de se connecter au serveur, veuillez réessayer ultérieurement");
             throw new Error("Unexpected response from server");
         }
+        recaptcha.current.reset();
     };
 
     async function register(event) {
@@ -121,6 +123,7 @@ export default function Login() {
 
         event.preventDefault();
         if (check_input(captchaValue) === false) {
+            recaptcha.current.reset();
             return;
         }
         try {
@@ -153,6 +156,7 @@ export default function Login() {
         } catch (err) {
             console.error(err);
         }
+        recaptcha.current.reset();
     }
 
     return (
@@ -207,8 +211,8 @@ export default function Login() {
                         }}
                     >
                         <h1 style={{
-                            marginBottom: '2rem',
-                            fontSize: '2rem'
+                            marginBottom: '1rem',
+                            fontSize: '3rem'
                         }}>
                             {showRegistration ? 'Inscription' : 'Connexion'}
                         </h1>
@@ -236,7 +240,7 @@ export default function Login() {
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
-                                            <AccountCircleIcon />
+                                            <EmailIcon />
                                         </InputAdornment>
                                     ),
                                 }}
@@ -256,10 +260,12 @@ export default function Login() {
                                             {showPassword ? (
                                                 <VisibilityIcon
                                                     onClick={togglePasswordVisibility}
+                                                    style={{ cursor: 'pointer' }}
                                                 />
                                             ) : (
                                                 <VisibilityOffIcon
                                                     onClick={togglePasswordVisibility}
+                                                    style={{ cursor: 'pointer' }}
                                                 />
                                             )}
                                         </InputAdornment>
