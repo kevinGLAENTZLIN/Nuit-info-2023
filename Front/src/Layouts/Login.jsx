@@ -18,6 +18,9 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const recaptcha = useRef();
+    const recaptcha_key = process.env.REACT_APP_RECAPTCHA_KEY_PUBLIC;
+    console.log(process.env);
+    console.log(recaptcha_key);
 
     const toggleRegistration = () => {
         setShowRegistration(!showRegistration);
@@ -46,8 +49,6 @@ export default function Login() {
     async function login(event) {
         const captchaValue = recaptcha.current.getValue();
 
-        let res;
-
         event.preventDefault();
         if (!captchaValue) {
             alert("Veuillez vérifier le captcha");
@@ -61,24 +62,34 @@ export default function Login() {
             alert("Aucun mot de passe n'a été indiqué");
             return;
         }
-        res = await fetch("http://localhost:3009/auth/login", {
+        const res = await fetch("http://127.0.0.1:3009/auth/login", {
             method: 'POST',
             body: JSON.stringify({
-                email: 'test5@gmail.com',
+                email: email.toLowerCase(),
                 password: password,
                 captcha: captchaValue,
             }),
             headers: {
                 'content-type': 'application/json',
             },
-        }).catch(err => {
-            alert(err);
         });
+
+        if (res.status === 400 || res.status === 500) {
+            const error = await res.json();
+            console.log("Error:", error);
+        } else if (res.status === 201) {
+            const data = await res.json();
+            setLocalStorage("bearerToken", data.token);
+            console.log(data.token);
+            setLocalStorage("user", data.id);
+        } else {
+            throw new Error("Unexpected response from server");
+        }
     }
 
     async function submitForm(event) {
         const captchaValue = recaptcha.current.getValue();
-        
+
         event.preventDefault();
         if (!captchaValue) {
             alert("Veuillez vérifier le captcha");
@@ -99,7 +110,7 @@ export default function Login() {
                 const res = await fetch("http://127.0.0.1:3009/auth/login", {
                     method: 'POST',
                     body: JSON.stringify({
-                        email: 'test5@gmail.com',
+                        email: email,
                         password: password,
                         captcha: captchaValue,
                     }),
@@ -231,8 +242,8 @@ export default function Login() {
                                 }}
                             />
                         )}
-                        <ReCAPTCHA 
-                            sitekey={process.env.RECAPTCHA_KEY_PUBLIC}
+                        <ReCAPTCHA
+                            sitekey={recaptcha_key}
                             ref={recaptcha}
                             sx={{
                                 marginBottom: '1rem',
@@ -389,10 +400,10 @@ export default function Login() {
                                     />
                                 )}
                                 <ReCAPTCHA
-                                    sitekey='6LdNNSopAAAAAFWK_Nt9rl3LRwJTvVeHCEX7mt8U'
+                                    sitekey={recaptcha_key}
                                     ref={recaptcha}
                                 />
-                                <Button onClick={submitForm} variant="contained" type="submit" sx={{ marginTop: '1rem', width: '20vh' }}>
+                                <Button onClick={showRegistration ? submitForm : login} variant="contained" type="submit" sx={{ marginTop: '1rem', width: '20vh' }}>
                                     {showRegistration ? 'S\'enregistrer' : 'Se connecter'}
                                 </Button>
                                 <Button
