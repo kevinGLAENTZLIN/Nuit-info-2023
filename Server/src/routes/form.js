@@ -67,7 +67,7 @@ export const daily = {
             type: "checkbox",
             isRequired: true,
             choices: [ "Train", "Avion", "Bus", "Métro", "Tramway", "RER", "Autre" ],
-            weight: [ 0.1, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1 ]
+            weight: [ 20, 100, 30, 15, 10, 20, 50 ]
         },
         {
             name: "bike_walk",
@@ -75,7 +75,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ],
-            weight: [ -0.1, 0.1 ]
+            weight: [ -10, 10 ]
         },
         {
             name: "carpooling",
@@ -83,7 +83,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ],
-            weight: [ -0.1, 0.1 ]
+            weight: [ -10, 10 ]
         },
         {
             name: "turn_off_lights",
@@ -91,7 +91,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ],
-            weight: [ 0.1, 0.05, 0.01, 0 ]
+            weight: [ 50, 30, 10, 0 ]
         },
         {
             name: "excessive_use_of_devices",
@@ -99,7 +99,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ],
-            weight: [ 0.1, 0.05, 0.01, 0 ]
+            weight: [ 0, 10, 30, 50 ]
         },
         {
             name: "local_and_seasonal_food",
@@ -107,7 +107,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "A chaque repas", "De temps en temps", "Jamais" ],
-            weight: [ -0.1, 0.1, 0.2 ]
+            weight: [ -30, -10, 10 ]
         },
         {
             name: "plant_protein_instead_of_meat",
@@ -115,7 +115,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "A chaque repas", "De temps en temps", "Jamais" ],
-            weight: [ -0.1, 0.1, 0.2 ]
+            weight: [ -30, 0, 50 ]
         },
         {
             name: "water_bottle_or_tap_water",
@@ -123,7 +123,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Bouteille plastique", "Eau du robinet" ],
-            weight: [ 0.1, -0.1 ]
+            weight: [ 20, 0 ]
         },
         {
             name: "zero_waste_purchases",
@@ -131,7 +131,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "J'ai acheté des produits en vrac", "J'ai acheté des produits sans emballage", "J'ai acheté des produits avec emballage" ],
-            weight: [ -0.1, 0.1, 0.2 ]
+            weight: [ 0, 0, 5 ]
         },
         {
             name: "area_of_living",
@@ -157,7 +157,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ],
-            weight: [ 0.1, 0.1 ]
+            weight: [ 50, 0 ]
         },
         {
             name: "buying_new_clothes",
@@ -165,7 +165,7 @@ export const daily = {
             type: "radio",
             isRequired: true,
             choices: [ "Oui", "Non" ],
-            weight: [ 0.1, 0.1 ]
+            weight: [ 10, 0 ]
         },
         {
             name: "time_spent_on_internet",
@@ -176,7 +176,7 @@ export const daily = {
             step: 1,
             unit: "h",
             isRequired: true,
-            weight: 1
+            weight: 2
         },
         {
             name: "number_of_cigarettes",
@@ -185,7 +185,7 @@ export const daily = {
             unit: "cigarettes",
             isRequired: true,
             placeHolder: "0",
-            weight: 1
+            weight: 10
         }
     ]
 }
