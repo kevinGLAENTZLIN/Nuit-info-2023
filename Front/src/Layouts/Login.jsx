@@ -179,7 +179,7 @@ export default function Login() {
                         backgroundPosition: 'center',
                         backgroundSize: 'cover',
                         width: '100%',
-                        maxHeight: '100vh',
+                        height: '100vh',
                         objectFit: 'cover',
                         position: 'absolute',
                         objectPosition: 'center',
