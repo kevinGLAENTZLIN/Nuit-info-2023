@@ -37,7 +37,7 @@ const InfoBoxContainer = ({ infoData }) => {
 
 const getEmail = async () => {
   try {
-    const response = await axios.get(`http://127.0.0.1:3009/user/${getLocalStorage("user")}`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/${getLocalStorage("user")}`, {
       headers: {
         "Authorization": `Bearer ${getLocalStorage("bearerToken")}`,
       },

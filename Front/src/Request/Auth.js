@@ -11,7 +11,7 @@ export function setLocalStorage(key, value) {
 
 export async function checkLoginStatus() {
   try {
-    await axios.get(`http://127.0.0.1:3009/user`, {
+    await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user`, {
       headers: {
         "Authorization": `Bearer ${getLocalStorage("bearerToken")}`
       }
