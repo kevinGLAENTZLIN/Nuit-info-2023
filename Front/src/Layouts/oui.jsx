@@ -59,7 +59,7 @@ export default function LandingPage() {
       <Grid container spacing={4}>
         {sections.map((section, index) => (
           <Grid item key={index} xs={3}>
-            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#A9B388' }}>
               <img src={section.image} alt={`Section ${index + 1}`} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" component="div">
@@ -77,7 +77,7 @@ export default function LandingPage() {
         ))}
       </Grid>
       {sections.map((section, index) => (
-        <Box key={index} sx={{ marginTop: 4, borderBottom: '1px solid #ccc' }} id={section.link}>
+        <Box key={index} sx={{ marginTop: 4, borderBottom: '1px solid #ccc', backgroundColor: '#faf8e8'}} id={section.link}>
           <Typography variant="h4" sx={{ marginBottom: 2 }}>
             {section.title}
           </Typography>
