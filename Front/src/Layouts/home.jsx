@@ -11,6 +11,8 @@ import ChartComponent from '../Compenent/graph';
 import { setLocalStorage, getLocalStorage } from '../Request/Auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Snowfall from 'react-snowfall';
+import backgroundImage from '../Assets/test.jpeg'; // Import your background image
 
 const InfoBox = ({ data }) => {
   return (
@@ -47,8 +49,6 @@ const getEmail = async () => {
   }
 }
 
-// ... (imports inchangés)
-
 const Home = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [email, setEmail] = useState(null);
@@ -62,9 +62,10 @@ const Home = () => {
       console.error(error);
     }
   };
-  if (email === null) {
-    fetchEmail()
-  }
+
+  useEffect(() => {
+    fetchEmail();
+  }, []);  
 
   const signOut = () => {
     setLocalStorage("bearerToken", null);
@@ -93,7 +94,18 @@ const Home = () => {
   ];
 
   return (
-    <div style={{ position: 'relative', paddingTop: 16, paddingRight: 16, textAlign: 'right' }}>
+    <div
+      style={{
+        position: 'relative',
+        paddingTop: 16,
+        paddingRight: 16,
+        textAlign: 'right',
+        backgroundImage: `url(${backgroundImage})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
+      }}
+    >
+      <Snowfall snowflakeCount={100} style={{ zIndex: 1000 }} />
       <IconButton
         color="inherit"
         aria-label="user-profile"
@@ -124,7 +136,7 @@ const Home = () => {
           <Button onClick={signOut}>Déconnexion</Button>
         </Paper>
       </Popover>
-      <div style={{ marginTop: 40 /* ajustez la valeur selon vos besoins */ }}>
+      <div style={{ marginTop: 40 }}>
         <InfoBoxContainer infoData={infoData} />
       </div>
       <ChartComponent />
