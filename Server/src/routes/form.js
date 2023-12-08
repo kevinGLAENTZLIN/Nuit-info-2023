@@ -61,7 +61,7 @@ export const daily = {
             placeHolder: "0",
             weight: 1,
             sources: [
-                ''
+                { title: 'L\'utilisation fréquente de la voiture: quels impacts ?', url: 'https://www.senat.fr/rap/r01-113/r01-1132.html' },
             ]
         },
         {
@@ -72,7 +72,7 @@ export const daily = {
             choices: [ "Train", "Avion", "Bus", "Métro", "Tramway", "RER", "Autre" ],
             weight: [ 20, 100, 30, 15, 10, 20, 50 ],
             sources: [
-                ''
+                { title: 'L\'utilisation fréquente des transports en commun: quels impacts ?', url: 'https://www.carbono.eco/blog/post/avantages-des-transports-en-commun-pour-l-environnement' },
             ]
         },
         {
@@ -83,7 +83,7 @@ export const daily = {
             choices: [ "Oui", "Non" ],
             weight: [ -10, 10 ],
             sources: [
-                ''
+                { title: 'La marche ou le vélo: quels impacts ?', url: 'https://projetseen.fr/transport/velo-impact-environnemental-et-evolution-des-habitudes-de-transport/#:~:text=L\'impact%20environnemental%20du%20v%C3%A9lo&text=M%C3%AAme%20si%20l\'on%20prend,CO2%20par%20km%20parcouru.&text=Pour%20cette%20m%C3%AAme%20distance%2C%20l,grammes%20eqCO2%20par%20passager.' },
             ]
         },
         {
@@ -94,7 +94,7 @@ export const daily = {
             choices: [ "Oui", "Non" ],
             weight: [ -10, 10 ],
             sources: [
-                ''
+                { title: 'Le covoiturage: quels impacts ?', url: 'https://transportsdufutur.ademe.fr/2017/02/environnemental-covoiturage-distance.html' },
             ]
         },
         {
@@ -105,7 +105,7 @@ export const daily = {
             choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ],
             weight: [ 50, 30, 10, 0 ],
             sources: [
-                ''
+                { title: 'Eteindre la lumière: quels impacts ?', url: 'https://www.lfb.es/portfolio_page/ecologie-eteindre-les-lumieres/' },
             ]
         },
         {
@@ -116,7 +116,7 @@ export const daily = {
             choices: [ "Jamais", "Parfois", "Souvent", "Toujours" ],
             weight: [ 0, 10, 30, 50 ],
             sources: [
-                ''
+                { title: 'L\'utilisation d\'appareils énergivores: quels impacts ? ', url: 'https://greenkit.fr/limpact-environnemental-de-lelectromenager/' },
             ]
         },
         {
@@ -127,7 +127,7 @@ export const daily = {
             choices: [ "A chaque repas", "De temps en temps", "Jamais" ],
             weight: [ -30, -10, 10 ],
             sources: [
-                ''
+                { title: 'L\'achat de produist locaux: quels impacts ?', url: 'https://reseauactionclimat.org/manger-local-permet-il-de-reduire-les-impacts-environnementaux-de-son-alimentation/' },
             ]
         },
         {
@@ -138,7 +138,7 @@ export const daily = {
             choices: [ "A chaque repas", "De temps en temps", "Jamais" ],
             weight: [ -30, 0, 50 ],
             sources: [
-                ''
+                { title: 'La consommation de produits végétaux: quels impacts ? ', url: 'https://lesceptique.ca/2015/12/01/viande-et-vegetaux/' },
             ]
         },
         {
@@ -149,7 +149,7 @@ export const daily = {
             choices: [ "Bouteille plastique", "Eau du robinet" ],
             weight: [ 20, 0 ],
             sources: [
-                ''
+                { title: 'La consommation d\'eau en bouteille plastique: quels impacts ?', url: 'https://lavie.bio/quels-sont-les-impacts-environnementaux-des-bouteilles-deau-en-plastique-et-comment-les-eviter/#' },
             ]
         },
         {
@@ -160,7 +160,7 @@ export const daily = {
             choices: [ "J'ai acheté des produits en vrac", "J'ai acheté des produits sans emballage", "J'ai acheté des produits avec emballage" ],
             weight: [ 0, 0, 5 ],
             sources: [
-                ''
+                { title: 'Les achats "zéro déchet": quels impacts ?', url: 'https://www.ecoconso.be/fr/content/zero-dechet-le-reutilisable-est-il-toujours-plus-ecologique' },
             ]
         },
         {
@@ -172,7 +172,7 @@ export const daily = {
             placeHolder: "0",
             weight: 1,
             sources: [
-                ''
+                { title: 'La taille du logement: quels impacts ?', url: 'https://www.notre-environnement.gouv.fr/themes/amenagement/article/le-logement' },
             ]
         },
         {
@@ -184,7 +184,7 @@ export const daily = {
             placeHolder: "0",
             weight: 1,
             sources: [
-                ''
+                { title: 'Le nombre d\'habitants dans un logement: quels impacts ?', url: 'https://www.notre-environnement.gouv.fr/themes/amenagement/article/le-logement' },
             ]
         },
         {
@@ -195,7 +195,7 @@ export const daily = {
             choices: [ "Oui", "Non" ],
             weight: [ 50, 0 ],
             sources: [
-                ''
+                { title: 'L\'utilisation du climatiseur: quels impacts ?', url: 'https://promee.fr/actualites/conseils/vrai-faux-est-ce-que-la-climatisation-est-mauvaise-pour-lenvironnement' },
             ]
         },
         {
@@ -206,7 +206,7 @@ export const daily = {
             choices: [ "Oui", "Non" ],
             weight: [ 10, 0 ],
             sources: [
-                ''
+                { title: 'L\'achat de nouveaux vêtements : quels impacts ?', url: 'https://www.oxfamfrance.org/agir-oxfam/impact-de-la-mode-consequences-sociales-environnementales/' },
             ]
         },
         {
@@ -220,7 +220,7 @@ export const daily = {
             isRequired: true,
             weight: 2,
             sources: [
-                ''
+                { title: 'L\'utilisation fréquente d\'internet: quels impacts ?', url: 'https://www.greenpeace.fr/la-pollution-numerique/' },
             ]
         },
         {
@@ -232,7 +232,7 @@ export const daily = {
             placeHolder: "0",
             weight: 10,
             sources: [
-                ''
+                { title: 'La consommation régulière de cigarettes: quels impacts ?', url: 'https://www.who.int/fr/news/item/31-05-2022-who-raises-alarm-on-tobacco-industry-environmental-impact' },
             ]
         }
     ]
