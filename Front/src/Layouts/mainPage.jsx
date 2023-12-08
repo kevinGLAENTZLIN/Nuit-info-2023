@@ -50,7 +50,7 @@ function MainPage() {
     <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline/>
-            <div style={{display: 'flex', height: '100%', minHeight: '100vh'}}>
+            <div style={{display: 'flex', height: '100%', minHeight: '100vh', backgroundColor: '#ECE3CE'}}>
               <div style={{height: "100%", width: "100%"}}>
                 <main>
                   <Routes>
