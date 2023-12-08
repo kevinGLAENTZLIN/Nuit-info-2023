@@ -12,7 +12,7 @@ import { setLocalStorage, getLocalStorage } from '../Request/Auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Snowfall from 'react-snowfall';
-import backgroundImage from '../Assets/test.jpeg'; // Import your background image
+import backgroundImage from '../Assets/test.jpeg';
 
 const InfoBox = ({ data }) => {
   return (
@@ -49,9 +49,25 @@ const getEmail = async () => {
   }
 }
 
+const callApi = async (endpoint) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:3009/${endpoint}`, {
+      headers: {
+        "Authorization": `Bearer ${getLocalStorage("bearerToken")}`,
+      },
+    });
+    const data = response.data;
+    return data;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
 const Home = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [email, setEmail] = useState(null);
+  const [infoData, setInfoData] = useState([]);
   const navigate = useNavigate();
 
   const fetchEmail = async () => {
@@ -63,9 +79,34 @@ const Home = () => {
     }
   };
 
+  const fetchAccountLastData = async () => {
+    try {
+      const currentYear = new Date().getFullYear();
+      const currentWeek = getWeekNumber(new Date());
+      const rsp = await callApi(`user/data/process/${currentYear}/${currentWeek}`);
+      if (rsp === null) return;
+      const infoDataDynamic = Object.keys(rsp).map(key => ({
+        title: key.charAt(0).toUpperCase() + key.slice(1),
+        content: rsp[key].toString(),
+      }));
+      console.log("infoDatainfoDatainfoData", infoDataDynamic);
+
+      setInfoData(infoDataDynamic);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getWeekNumber = (date) => {
+    const onejan = new Date(date.getFullYear(), 0, 1);
+    const millisecsInDay = 86400000;
+    return Math.ceil(((date - onejan) / millisecsInDay + onejan.getDay() + 1) / 7);
+  };
+
   useEffect(() => {
     fetchEmail();
-  }, []);  
+    fetchAccountLastData();
+  }, []);
 
   const signOut = () => {
     setLocalStorage("bearerToken", null);
@@ -84,25 +125,16 @@ const Home = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  const infoData = [
-    { title: 'Info 1', content: 'Description 1' },
-    { title: 'Info 2', content: 'Description 2' },
-    { title: 'Info 43', content: 'Description 32' },
-    { title: 'Info 1', content: 'Description 1' },
-    { title: 'Info 2', content: 'Description 2' },
-    { title: 'Info 43', content: 'Description 32' },
-  ];
-
   return (
     <div
       style={{
         position: 'relative',
         width: '100vw',
-        height: '100vh', 
+        height: '100vh',
         textAlign: 'right',
-        backgroundImage: `url(${backgroundImage})`, 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <Snowfall snowflakeCount={100} style={{ zIndex: 1000 }} />
@@ -131,13 +163,13 @@ const Home = () => {
       >
         <Paper style={{ padding: 16 }}>
           <Typography variant="h6" gutterBottom>
-            { email }
+            {email}
           </Typography>
           <Button onClick={signOut}>Déconnexion</Button>
         </Paper>
       </Popover>
       <div style={{ marginTop: 40 }}>
-        <InfoBoxContainer infoData={infoData} />
+        {infoData && (infoData.length > 0) && <InfoBoxContainer infoData={infoData} />}
       </div>
       <ChartComponent />
     </div>
