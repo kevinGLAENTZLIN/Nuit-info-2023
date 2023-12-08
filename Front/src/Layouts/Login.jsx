@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 //@MUI---------------------------------------------------------------
-import { Box, Container, TextField, Button, InputAdornment, useMediaQuery } from "@mui/material";
+import { Box, Container, TextField, Button, InputAdornment } from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -98,11 +98,14 @@ export default function Login() {
         if (res.status === 400 || res.status === 500) {
             const error = await res.json();
             console.error("Error:", error);
+            setTextInfo(error.msg);
         } else if (res.status === 201) {
             const data = await res.json();
             setLocalStorage("bearerToken", data.token);
             setLocalStorage("user", data.id);
+            setTextInfo("Connecté avec succès");
         } else {
+            setTextInfo("Impossible de se connecter au serveur, veuillez réessayer ultérieurement");
             throw new Error("Unexpected response from server");
         }
     };
@@ -115,7 +118,7 @@ export default function Login() {
             return;
         }
         try {
-            const res = await fetch("http://127.0.0.1:3009/auth/login", {
+            const res = await fetch("http://127.0.0.1:3009/auth/register", {
                 method: 'POST',
                 body: JSON.stringify({
                     email: email,
@@ -127,16 +130,17 @@ export default function Login() {
                 },
             });
 
-            // 400 : compte déjà existant
-            // 500 : Erreur de connexion
             if (res.status === 400 || res.status === 500) {
-                console.error("Error:", res.json());
-                setTextInfo(res.json().msg);
+                console.log({
+                    email: email,
+                    password: password,
+                    captcha: captchaValue,
+                });
             } else if (res.status === 201) {
                 const data = await res.json();
                 setTextInfo(data.msg);
             } else {
-                setTextInfo("Impossible de se connecter au serveur, veuillez réessayer");
+                setTextInfo("Impossible de se connecter au serveur, veuillez réessayer ultérieurement");
                 throw new Error("Unexpected response from server");
             }
         } catch (err) {
